@@ -1,6 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_user_info">
+
+    <ImageView
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:id="@+id/imageView_profile"
+        android:src="@drawable/default_profile"
+        android:scaleType="fitXY"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Username: "
+            android:id="@+id/textView_username_tag"
+            android:singleLine="false"
+            android:paddingLeft="4dp"
+            android:textSize="24dp"
+            android:textColor="#4052b5"
+            android:paddingRight="4dp"
+            android:layout_gravity="center_vertical" />
+
+        <ViewSwitcher
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/viewswitcher_Username"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/view_username1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/textView_username"
+                    android:text="Username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="#393636"
+                    android:layout_gravity="center_vertical" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/view_username2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/editText_username"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="EditableUsername"
+                    android:textSize="20dp"
+                    android:textColor="#393636">
+                </EditText>
+            </LinearLayout>
+        </ViewSwitcher>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Email: "
+            android:id="@+id/textView_email_tag"
+            android:singleLine="false"
+            android:paddingLeft="4dp"
+            android:textSize="24dp"
+            android:textColor="#4052b5"
+            android:paddingRight="4dp"
+            android:layout_gravity="center_vertical" />
+
+        <ViewSwitcher
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/viewswitcher_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:id="@+id/view_email1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/textView_email"
+                    android:text="Email@email.com"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="#393636"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/view_email2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/editText_email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="EditableEmail"
+                    android:textSize="20dp"
+                    android:textColor="#393636">
+                </EditText>
+            </LinearLayout>
+        </ViewSwitcher>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Password: "
+            android:id="@+id/textview_password_tag"
+            android:singleLine="false"
+            android:paddingLeft="4dp"
+            android:textSize="24dp"
+            android:textColor="#4052b5"
+            android:paddingRight="4dp"
+            android:layout_gravity="center_vertical" />
+
+        <ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/viewSwitcher_password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" >
+
+            <LinearLayout
+                android:id="@+id/view_password1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/textView_password"
+                    android:text="*********"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="#393636"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/view_password2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <EditText
+                    android:id="@+id/editText_password"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="editablePassword"
+                    android:textSize="20dp"
+                    android:textColor="#393636" />
+            </LinearLayout>
+        </ViewSwitcher>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Click on your information to change it"
+        android:id="@+id/textView_explain"
+        android:layout_gravity="center_horizontal"
+        android:gravity="bottom"
+        android:paddingBottom="4dp" />
 
 </LinearLayout>
