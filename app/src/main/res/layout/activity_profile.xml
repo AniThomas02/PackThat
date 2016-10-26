@@ -15,6 +15,65 @@
         android:layout_marginTop="15dp" />
 
     <LinearLayout
+        android:id="@+id/layout_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Name: "
+            android:id="@+id/textView_name_tag"
+            android:singleLine="false"
+            android:paddingLeft="4dp"
+            android:textSize="24dp"
+            android:textColor="#4052b5"
+            android:paddingRight="4dp"
+            android:layout_gravity="center_vertical" />
+
+        <ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/viewSwitcher_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/view_name1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/textView_name"
+                    android:text="Name Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="#393636"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/view_name2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <EditText
+                    android:id="@+id/editText_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="EditableName"
+                    android:textSize="20dp"
+                    android:textColor="#393636" />
+            </LinearLayout>
+        </ViewSwitcher>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/layout_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -139,73 +198,32 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout_password"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="15dp" >
+        android:layout_height="match_parent"
+        android:id="@+id/layout_password_and_info"
+        android:gravity="bottom"
+        android:paddingBottom="5dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Password: "
-            android:id="@+id/textview_password_tag"
-            android:singleLine="false"
-            android:paddingLeft="4dp"
-            android:textSize="24dp"
-            android:textColor="#4052b5"
-            android:paddingRight="4dp"
-            android:layout_gravity="center_vertical" />
+            android:text="Click on your information to change it"
+            android:id="@+id/textView_explain"
+            android:gravity="bottom"
+            android:paddingBottom="4dp"
+            android:textAlignment="center" />
 
-        <ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/viewSwitcher_password"
-            android:layout_width="fill_parent"
+        <Button
+            android:id="@+id/button_change_password"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" >
+            android:text="Change Password"
+            android:background="#4052b5"
+            android:textColor="@color/colorAccent"
+            android:textSize="20dp" />
 
-            <LinearLayout
-                android:id="@+id/view_password1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center" >
-
-                <TextView
-                    android:id="@+id/textView_password"
-                    android:text="*********"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:textColor="#393636"
-                    android:layout_gravity="center_vertical" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/view_password2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <EditText
-                    android:id="@+id/editText_password"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="editablePassword"
-                    android:textSize="20dp"
-                    android:textColor="#393636" />
-            </LinearLayout>
-        </ViewSwitcher>
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Click on your information to change it"
-        android:id="@+id/textView_explain"
-        android:layout_gravity="center_horizontal"
-        android:gravity="bottom"
-        android:paddingBottom="4dp" />
 
 </LinearLayout>
