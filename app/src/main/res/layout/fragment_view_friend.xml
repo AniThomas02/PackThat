@@ -1,0 +1,111 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_friend_info">
+
+    <ImageView
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:id="@+id/imageView_friend_profile"
+        android:src="@drawable/default_profile"
+        android:scaleType="fitXY"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Name: "
+            android:id="@+id/textView_friend_name_tag"
+            android:singleLine="false"
+            android:paddingLeft="4dp"
+            android:textSize="24dp"
+            android:textColor="#4052b5"
+            android:paddingRight="4dp"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:id="@+id/textView_friend_name"
+            android:text="Name Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="#393636"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Username: "
+            android:id="@+id/textView_friend_username_tag"
+            android:singleLine="false"
+            android:paddingLeft="4dp"
+            android:textSize="24dp"
+            android:textColor="#4052b5"
+            android:paddingRight="4dp"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:id="@+id/textView_friend_username"
+            android:text="Username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="#393636"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Email: "
+            android:id="@+id/textView_friend_email_tag"
+            android:singleLine="false"
+            android:paddingLeft="4dp"
+            android:textSize="24dp"
+            android:textColor="#4052b5"
+            android:paddingRight="4dp"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:id="@+id/textView_friend_email"
+            android:text="Email@email.com"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="#393636"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+</LinearLayout>

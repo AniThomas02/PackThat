@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_add_event">
+
+    <LinearLayout
+        android:id="@+id/layout_event_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Event Name"
+            android:id="@+id/textView_event_name_tag"
+            android:singleLine="false"
+            android:paddingLeft="4dp"
+            android:textSize="24dp"
+            android:textColor="#4052b5"
+            android:paddingRight="4dp"
+            android:layout_gravity="center_horizontal" />
+
+        <EditText
+            android:id="@+id/editText_event_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="New Event"
+            android:textSize="20dp"
+            android:textColor="#393636"
+            android:textAlignment="center">
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_event_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Description"
+            android:id="@+id/textView_event_description_tag"
+            android:singleLine="false"
+            android:paddingLeft="4dp"
+            android:textSize="24dp"
+            android:textColor="#4052b5"
+            android:paddingRight="4dp"
+            android:layout_gravity="center_horizontal" />
+
+        <EditText
+            android:id="@+id/editText_event_description"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:hint="Here you can put a simple description of your event"
+            android:textSize="20dp"
+            android:textColor="#393636"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_event_startdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Start Date"
+            android:id="@+id/textView_event_startdate_tag"
+            android:singleLine="false"
+            android:paddingLeft="4dp"
+            android:textSize="24dp"
+            android:textColor="#4052b5"
+            android:paddingRight="4dp"
+            android:layout_gravity="center_horizontal" />
+
+        <EditText
+            android:id="@+id/editText_event_startdate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:hint="Day Event Starts"
+            android:textSize="20dp"
+            android:textColor="#393636"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout_add_event_buttons"
+        android:paddingBottom="4dp"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/button_create_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Event"
+            android:background="@color/colorAccent"
+            android:textColor="#4052b5"
+            android:textSize="20dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginTop="6dp" />
+
+        <Button
+            android:id="@+id/button_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:background="#4052b5"
+            android:textColor="@color/colorAccent"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+</LinearLayout>

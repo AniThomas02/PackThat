@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="layout.FriendsFragment"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_weight=".90" >
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView_friends" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/button_add_friend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Friend"
+        android:background="#4052b5"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp"
+        android:layout_weight=".025"
+        android:layout_marginBottom="4dp" />
+</LinearLayout>
