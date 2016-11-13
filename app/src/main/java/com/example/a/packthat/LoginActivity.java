@@ -42,22 +42,24 @@ public class LoginActivity extends AppCompatActivity{
 
     private void attemptRegister(String email, String password) {
         if(isEmailValid(email) && isPasswordValid(password)){
-            sendToGame(email);
+            sendToGame(email, "newUser");
         }
     }
 
     private void attemptLogin(String email, String password) {
-        if(email.equals("Test@test.com") && password.equals("Test1")){
-            sendToGame(email);
+        if(email.equals("test@test.com") && password.equals("Test1")){
+            sendToGame(email, "oldUser");
+        }else {
+            Toast.makeText(getApplicationContext(), "Could not find email and password with that name.", Toast.LENGTH_SHORT).show();
         }
     }
 
     private boolean isEmailValid(String email) {
-        if(email.length() < 4) {
-            Toast.makeText(getApplicationContext(), "Email must be at least 4 characters", Toast.LENGTH_SHORT).show();
-            return false;
-        }else{
+        if(email.matches("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$")) {
             return true;
+        }else{
+            Toast.makeText(getApplicationContext(), "Email must be in a proper emailing format (e.g: email@email.com)", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 
@@ -70,9 +72,10 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
 
-    private void sendToGame(String email){
+    private void sendToGame(String email, String userType){
         Intent gameIntent = new Intent(this, MainActivity.class);
         gameIntent.putExtra("email", email);
+        gameIntent.putExtra("user", userType);
         startActivity(gameIntent);
         finish();
     }

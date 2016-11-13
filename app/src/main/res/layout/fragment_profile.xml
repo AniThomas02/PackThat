@@ -12,7 +12,17 @@
         android:src="@drawable/default_profile"
         android:scaleType="fitXY"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="15dp"
+        android:contentDescription="Profile Picture" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Click on the image to change it"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="2dp" />
 
     <LinearLayout
         android:id="@+id/layout_name"
@@ -30,7 +40,7 @@
             android:id="@+id/textView_name_tag"
             android:singleLine="false"
             android:paddingLeft="4dp"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:textColor="#4052b5"
             android:paddingRight="4dp"
             android:layout_gravity="center_vertical" />
@@ -52,7 +62,7 @@
                     android:text="Name Name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textColor="#393636"
                     android:layout_gravity="center_vertical" />
             </LinearLayout>
@@ -67,7 +77,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:hint="EditableName"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textColor="#393636" />
             </LinearLayout>
         </ViewSwitcher>
@@ -89,7 +99,7 @@
             android:id="@+id/textView_username_tag"
             android:singleLine="false"
             android:paddingLeft="4dp"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:textColor="#4052b5"
             android:paddingRight="4dp"
             android:layout_gravity="center_vertical" />
@@ -112,7 +122,7 @@
                     android:text="Username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textColor="#393636"
                     android:layout_gravity="center_vertical" />
 
@@ -127,7 +137,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:hint="EditableUsername"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textColor="#393636">
                 </EditText>
             </LinearLayout>
@@ -150,7 +160,7 @@
             android:id="@+id/textView_email_tag"
             android:singleLine="false"
             android:paddingLeft="4dp"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:textColor="#4052b5"
             android:paddingRight="4dp"
             android:layout_gravity="center_vertical" />
@@ -174,7 +184,7 @@
                     android:text="Email@email.com"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textColor="#393636"
                     android:layout_gravity="center_vertical"/>
 
@@ -190,8 +200,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:hint="EditableEmail"
-                    android:textSize="20dp"
-                    android:textColor="#393636">
+                    android:textSize="20sp"
+                    android:textColor="#393636"
+                    android:inputType="textEmailAddress">
                 </EditText>
             </LinearLayout>
         </ViewSwitcher>
@@ -205,25 +216,27 @@
         android:gravity="bottom"
         android:paddingBottom="5dp">
 
-        <TextView
+        <Button
+            android:id="@+id/button_edit_or_save"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Click on your information to change it"
-            android:id="@+id/textView_explain"
-            android:gravity="bottom"
-            android:paddingBottom="4dp"
-            android:textAlignment="center" />
+            android:layout_height="45dp"
+            android:text="Edit Information"
+            android:background="#4052b5"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"
+            android:layout_marginBottom="6dp"
+            android:onClick="editProfileInfo" />
 
         <Button
             android:id="@+id/button_change_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:text="Change Password"
             android:background="#4052b5"
             android:textColor="@color/colorAccent"
-            android:textSize="20dp" />
+            android:textSize="20sp"
+            android:nestedScrollingEnabled="false"
+            android:onClick="displayPasswordPopup" />
 
     </LinearLayout>
-
 </LinearLayout>
