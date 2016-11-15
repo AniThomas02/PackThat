@@ -1,6 +1,5 @@
 package com.example.a.packthat;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -120,6 +119,53 @@ public class MainActivity extends AppCompatActivity {
 
         final AlertDialog dialog = alert.create();
         password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    public void displayCreateEventView(View view){
+        LayoutInflater inflater = getLayoutInflater();
+        View createEventLayout = inflater.inflate(R.layout.dialog_create_event, null);
+        final EditText createName = (EditText) createEventLayout.findViewById(R.id.editText_create_name);
+        Button createEvent = (Button) createEventLayout.findViewById(R.id.button_create_event);
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Create Event");
+        alertDialog.setView(createEventLayout);
+        alertDialog.setCancelable(true);
+
+        final AlertDialog dialog = alertDialog.create();
+        createEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sName = createName.getText().toString();
+                if(!sName.equals("")){
+                    dialog.dismiss();
+                }else {
+                    Toast.makeText(getApplicationContext(), "Field no set.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        dialog.show();
+    }
+
+    public void displayViewEventPopup(View view){
+        LayoutInflater inflater = getLayoutInflater();
+        View viewEventLayout = inflater.inflate(R.layout.dialog_create_event, null);
+        Button manageEvent = (Button) viewEventLayout.findViewById(R.id.button_manage_event);
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("View Event");
+        alertDialog.setView(viewEventLayout);
+        alertDialog.setCancelable(true);
+
+        final AlertDialog dialog = alertDialog.create();
+        manageEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();

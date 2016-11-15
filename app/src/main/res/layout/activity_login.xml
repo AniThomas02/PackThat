@@ -52,8 +52,10 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/layout_login">
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_login"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -103,18 +105,26 @@
                 android:paddingRight="4sp"
                 android:textSize="12sp" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/layout_login_button">
+
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Login"
                 android:id="@+id/button_login"
-                android:layout_marginTop="15dp"
                 android:background="#4052b5"
                 android:textColor="#ffffff"
                 android:textSize="20sp"
                 android:onClick="registerOrLogin"
                 android:nestedScrollingEnabled="false" />
-
         </LinearLayout>
 
     </LinearLayout>

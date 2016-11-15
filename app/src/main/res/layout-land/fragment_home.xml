@@ -39,7 +39,7 @@
                 android:id="@+id/layout_personal_header">
 
                 <TextView
-                    android:layout_width="204dp"
+                    android:layout_width="208dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="My Personal Events"
@@ -59,7 +59,8 @@
                     android:text="Add New"
                     android:id="@+id/button_add_personal"
                     android:background="#4052b5"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/colorAccent"
+                    android:onClick="displayCreateEventView" />
             </LinearLayout>
 
             <ScrollView
@@ -80,8 +81,7 @@
             android:layout_height="match_parent"
             android:id="@+id/layout_group_events"
             android:weightSum="1"
-            android:layout_weight="1"
-            android:paddingLeft="4dp">
+            android:layout_weight="1">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_width="204dp"
+                    android:layout_width="208dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="My Group Events"
@@ -109,7 +109,8 @@
                     android:text="Add New"
                     android:id="@+id/button_add_group"
                     android:background="#4052b5"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/colorAccent"
+                    android:onClick="displayCreateEventView" />
             </LinearLayout>
 
             <ScrollView
