@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Date"
-            android:id="@+id/textView2"
+            android:id="@+id/textView_event_startdate"
             android:textSize="14sp"
             android:paddingBottom="4dp"
             android:paddingTop="4dp" />

@@ -8,8 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.a.packthat.MainActivity;
 import com.example.a.packthat.R;
+import com.example.a.packthat.User;
 
 public class ProfileFragment extends Fragment {
     // Store instance variables
@@ -25,8 +28,8 @@ public class ProfileFragment extends Fragment {
     public static ProfileFragment newInstance(int page, String title) {
         ProfileFragment profileFragment = new ProfileFragment();
         Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
+        args.putInt("pageNumber", page);
+        args.putString("pageTitle", title);
         profileFragment.setArguments(args);
         return profileFragment;
     }
@@ -34,8 +37,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
+        page = getArguments().getInt("pageNumber", 0);
+        title = getArguments().getString("pageTitle");
     }
 
     @Override
@@ -43,6 +46,21 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        fillProfileInfo();
+    }
+
+    public void fillProfileInfo(){
+        TextView name = (TextView)getView().findViewById(R.id.textView_name);
+        name.setText(User.Name);
+        TextView username = (TextView)getView().findViewById(R.id.textView_username);
+        username.setText(User.Username);
+        TextView email = (TextView)getView().findViewById(R.id.textView_email);
+        email.setText(User.Email);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

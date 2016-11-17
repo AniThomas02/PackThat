@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_friend_info">
+
+    <ImageView
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:id="@+id/imageView_friend_profile"
+        android:src="@drawable/default_profile"
+        android:scaleType="fitXY"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Name Of Friend"
+        android:id="@+id/textView_friend_name"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10sp"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Friend Username"
+        android:id="@+id/textView_friend_username"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10sp"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Friend Email"
+        android:id="@+id/textView_friend_email"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10sp"
+        android:textSize="16sp" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout_friend_buttons">
+
+        <Button
+            android:id="@+id/button_remove_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Friend"
+            android:background="#4052b5"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+</LinearLayout>

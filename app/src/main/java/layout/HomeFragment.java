@@ -32,8 +32,8 @@ public class HomeFragment extends Fragment {
     public static HomeFragment newInstance(int page, String title) {
         HomeFragment homeFragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
+        args.putInt("pageNumber", page);
+        args.putString("pageTitle", title);
         homeFragment.setArguments(args);
         return homeFragment;
     }
@@ -41,8 +41,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
+        page = getArguments().getInt("pageNumber", 0);
+        title = getArguments().getString("pageTitle");
     }
 
     @Override

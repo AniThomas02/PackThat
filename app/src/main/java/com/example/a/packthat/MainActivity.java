@@ -25,18 +25,20 @@ import layout.ProfileFragment;
  */
 public class MainActivity extends AppCompatActivity {
     FragmentPagerAdapter adapterViewPager;
-    public String MY_EMAIL = "Email1";
-    public ViewSwitcher nameSwitcher, usernameSwitcher,emailSwitcher;
+    public static User MY_USER;
+    public ViewSwitcher nameSwitcher, usernameSwitcher, emailSwitcher;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent gameIntent = getIntent();
+        MY_USER = (User) gameIntent.getSerializableExtra("user");
+
         setContentView(R.layout.activity_home);
         ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
 
-        Intent gameIntent = getIntent();
-        MY_EMAIL = gameIntent.getStringExtra("email");
         vpPager.setCurrentItem(1);
     }
 
@@ -173,4 +175,6 @@ public class MainActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
+
 }

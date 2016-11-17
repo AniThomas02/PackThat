@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a.packthat.R;
+import com.example.a.packthat.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,8 +33,8 @@ public class FriendsFragment extends Fragment {
     public static FriendsFragment newInstance(int page, String title) {
         FriendsFragment friendsFragment = new FriendsFragment();
         Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
+        args.putInt("pageNumber", page);
+        args.putString("pageTitle", title);
         friendsFragment.setArguments(args);
         return friendsFragment;
     }
@@ -41,8 +42,8 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
+        page = getArguments().getInt("pageNumber", 0);
+        title = getArguments().getString("pageTitle");
     }
 
     @Override
