@@ -106,6 +106,46 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void displayFriendDialog(View view){
+        LayoutInflater inflater = getLayoutInflater();
+        View viewFriendLayout = inflater.inflate(R.layout.dialog_view_friend, null);
+        Button deleteFriend = (Button) viewFriendLayout.findViewById(R.id.button_remove_friend);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("View Friend");
+        alert.setView(viewFriendLayout);
+        alert.setCancelable(true);
+
+        final AlertDialog dialog = alert.create();
+        deleteFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    public void displayAddFriendDialog(View view){
+        LayoutInflater inflater = getLayoutInflater();
+        View addFriendLayout = inflater.inflate(R.layout.dialog_add_friend, null);
+        Button addFriend = (Button) addFriendLayout.findViewById(R.id.button_add_friend);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Add Friend");
+        alert.setView(addFriendLayout);
+        alert.setCancelable(true);
+
+        final AlertDialog dialog = alert.create();
+        addFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
     public void displayPasswordPopup(View view){
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_change_password, null);
@@ -131,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void displayCreateEventView(View view){
         LayoutInflater inflater = getLayoutInflater();
-        View createEventLayout = inflater.inflate(R.layout.dialog_create_event, null);
+        View createEventLayout = inflater.inflate(R.layout.dialog_add_event, null);
         final EditText createName = (EditText) createEventLayout.findViewById(R.id.editText_create_name);
         Button createEvent = (Button) createEventLayout.findViewById(R.id.button_create_event);
 
@@ -148,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                 if(!sName.equals("")){
                     dialog.dismiss();
                 }else {
-                    Toast.makeText(getApplicationContext(), "Field no set.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Field not set.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -158,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void displayViewEventPopup(View view){
         LayoutInflater inflater = getLayoutInflater();
-        View viewEventLayout = inflater.inflate(R.layout.dialog_create_event, null);
+        View viewEventLayout = inflater.inflate(R.layout.dialog_add_event, null);
         Button manageEvent = (Button) viewEventLayout.findViewById(R.id.button_manage_event);
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -175,6 +215,4 @@ public class MainActivity extends AppCompatActivity {
         });
         dialog.show();
     }
-
-
 }

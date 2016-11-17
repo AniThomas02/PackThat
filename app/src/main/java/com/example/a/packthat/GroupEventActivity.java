@@ -62,4 +62,6 @@ public class GroupEventActivity extends AppCompatActivity{
             return "Page " + position;
         }
     }
+
+
 }

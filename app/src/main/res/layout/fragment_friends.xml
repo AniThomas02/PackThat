@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
-        android:layout_weight=".90" >
+        android:layout_weight=".90">
 
         <ListView
             android:layout_width="wrap_content"
@@ -18,12 +18,13 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/button_add_friend"
+        android:id="@+id/button_display_add_friend_popup"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:text="Add Friend"
         android:background="#4052b5"
         android:textColor="@color/colorAccent"
         android:textSize="20dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="5dp"
+        android:onClick="displayAddFriendDialog" />
 </LinearLayout>
