@@ -18,11 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 /**
  * A login screen that offers login via email/password.
@@ -54,64 +50,10 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
 
+    //region REGISTRATION METHODS
     private void attemptRegister(String email, String password) {
         if(isEmailValid(email) && isPasswordValid(password)){
-            try {
-                //make new user
-                //AddUserTask addUserTask = new AddUserTask();
-                //addUserTask.execute(email, password);
-                //addUserTask.get();
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                JSONObject params = new JSONObject();
-                params.put("name", "Enter Name");
-                String tempUsername = email.substring(0, email.indexOf('@'));
-                params.put("username", tempUsername);
-                params.put("email", email);
-                params.put("password", password);
-                params.put("profileImg", "Default");
-                String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/addUser.php";
-                JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                        (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    int tempId = response.getInt("Id");
-                                    String tempName = response.getString("Name");
-                                    String tempUsername = response.getString("Username");
-                                    String tempEmail = response.getString("Email");
-                                    String tempPassword = response.getString("Password");
-                                    String tempProfImg = response.getString("ProfileImg");
-                                    User tempUser = new User(tempId, tempName, tempUsername, tempEmail, tempPassword, tempProfImg);
-                                    sendToGame(tempUser);
-                                } catch(Exception ex) {
-                                    System.out.println(ex.toString());
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.i("LoginActivity", error.toString());
-                                System.out.println("Error");
-                            }
-                        });
-
-                requestQueue.add(jsObjRequest);
-
-                //User currUser = new User(0, "Tester", "Testing", email, password, "Default");
-                //send user to game
-            }catch (Exception e){
-                Log.i("LoginActivity", e.toString());
-                Toast.makeText(getApplicationContext(), "Error creating new user account.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void attemptLogin(String email, String password) {
-        if(email.equals("test@test.com") && password.equals("Test1")){
-            User currUser = new User(0, "TestName", "TestUsername", email, password, "Default");
-            sendToGame(currUser);
-        }else {
-            Toast.makeText(getApplicationContext(), "Could not find email and password with that name.", Toast.LENGTH_SHORT).show();
+            getEmailFromDatabase(email, password);
         }
     }
 
@@ -125,12 +67,113 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private boolean isPasswordValid(String password) {
-        if(password.matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$")){
-            return true;
-        }else{
-            Toast.makeText(getApplicationContext(), "Error with password. Check password requirements and try again.", Toast.LENGTH_SHORT).show();
+        if(password.length() < 6){
+            Toast.makeText(getApplicationContext(), "Password is too short, it must be at least 6 characters in length.", Toast.LENGTH_SHORT).show();
             return false;
+        }else if(!password.matches(".*\\d+.*")){
+            Toast.makeText(getApplicationContext(), "Password must contain a number.", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(!password.matches(".*[a-z]+.*")){
+            Toast.makeText(getApplicationContext(), "Password must contain a lowercase letter.", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(!password.matches(".*[A-Z]+.*")){
+            Toast.makeText(getApplicationContext(), "Password must contain an uppercase letter.", Toast.LENGTH_SHORT).show();
+            return false;
+        }else{
+            return true;
         }
+    }
+
+    private void getEmailFromDatabase(final String enteredEmail, final String enteredPassword){
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            JSONObject params = new JSONObject();
+            params.put("email", enteredEmail);
+            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/selectEmail.php";
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String tempEmail = response.getString("Email");
+                                if(!tempEmail.equals(enteredEmail)){
+                                    registerUser(enteredEmail, enteredPassword);
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "User already in use. Try logging in or use another email.", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch(Exception ex) {
+                                System.out.println(ex.toString());
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("LoginActivity", error.toString());
+                            System.out.println("Error");
+                        }
+                    });
+            requestQueue.add(jsObjRequest);
+        }catch (Exception e){
+            Log.i("LoginActivity", e.toString());
+            Toast.makeText(getApplicationContext(), "Error creating new user account.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void registerUser(String email, String password){
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            JSONObject params = new JSONObject();
+            params.put("name", "Enter Name");
+            String tempUsername = email.substring(0, email.indexOf('@'));
+            params.put("username", tempUsername);
+            params.put("email", email);
+            params.put("password", password);
+            params.put("profileImg", "Default");
+            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/addUser.php";
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                int tempId = response.getInt("Id");
+                                String tempName = response.getString("Name");
+                                String tempUsername = response.getString("Username");
+                                String tempEmail = response.getString("Email");
+                                String tempPassword = response.getString("Password");
+                                String tempProfImg = response.getString("ProfileImg");
+                                User tempUser = new User(tempId, tempName, tempUsername, tempEmail, tempPassword, tempProfImg);
+                                sendToGame(tempUser);
+                            } catch(Exception ex) {
+                                System.out.println(ex.toString());
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("LoginActivity", error.toString());
+                            System.out.println("Error");
+                        }
+                    });
+            requestQueue.add(jsObjRequest);
+        }catch (Exception e){
+            Log.i("LoginActivity", e.toString());
+            Toast.makeText(getApplicationContext(), "Error creating new user account.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    //endregion
+
+
+    private void attemptLogin(String email, String password) {
+        if(checkForUserInformation(email, password)){
+            User currUser = new User(0, "TestName", "TestUsername", email, password, "Default");
+            sendToGame(currUser);
+        }else {
+            Toast.makeText(getApplicationContext(), "Could not find user with that email/password.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkForUserInformation(String email, String password){
+        return false;
     }
 
     private void sendToGame(User user){
