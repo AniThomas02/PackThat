@@ -216,6 +216,12 @@ public class LoginActivity extends AppCompatActivity{
     private void sendToGame(User user){
         Intent gameIntent = new Intent(this, MainActivity.class);
         gameIntent.putExtra("user", user);
+        CheckBox checkBox = (CheckBox)findViewById(R.id.checkBox_registering);
+        if(checkBox.isChecked()){
+            gameIntent.putExtra("newUser", "new");
+        }else{
+            gameIntent.putExtra("newUser", "false");
+        }
         startActivity(gameIntent);
         finish();
     }
