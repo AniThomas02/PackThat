@@ -7,12 +7,11 @@ import java.io.Serializable;
  */
 public class User implements Serializable{
     public static int Id;
-    public static String Name, Username, Email, Password, ProfileImg;
+    public static String Name, Email, Password, ProfileImg;
 
-    public User(int id, String name, String username, String email, String password, String profileImg){
+    public User(int id, String name, String email, String password, String profileImg){
         Id = id;
         Name = name;
-        Username = username;
         Email = email;
         Password = password;
         ProfileImg = profileImg;

@@ -57,8 +57,6 @@ public class ProfileFragment extends Fragment {
     public void fillProfileInfo(){
         TextView name = (TextView)getView().findViewById(R.id.textView_name);
         name.setText(User.Name);
-        TextView username = (TextView)getView().findViewById(R.id.textView_username);
-        username.setText(User.Username);
         TextView email = (TextView)getView().findViewById(R.id.textView_email);
         email.setText(User.Email);
     }

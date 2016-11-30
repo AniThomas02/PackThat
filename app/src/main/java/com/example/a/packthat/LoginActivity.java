@@ -123,9 +123,8 @@ public class LoginActivity extends AppCompatActivity{
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             JSONObject params = new JSONObject();
-            params.put("name", "Enter Name");
-            String tempUsername = email.substring(0, email.indexOf('@'));
-            params.put("username", tempUsername);
+            String tempName = email.substring(0, email.indexOf('@'));
+            params.put("name", tempName);
             params.put("email", email);
             params.put("password", password);
             params.put("profileImg", "Default");
@@ -137,11 +136,10 @@ public class LoginActivity extends AppCompatActivity{
                             try {
                                 int tempId = response.getInt("Id");
                                 String tempName = response.getString("Name");
-                                String tempUsername = response.getString("Username");
                                 String tempEmail = response.getString("Email");
                                 String tempPassword = response.getString("Password");
                                 String tempProfImg = response.getString("ProfileImg");
-                                User tempUser = new User(tempId, tempName, tempUsername, tempEmail, tempPassword, tempProfImg);
+                                User tempUser = new User(tempId, tempName, tempEmail, tempPassword, tempProfImg);
                                 sendToGame(tempUser);
                             } catch(Exception ex) {
                                 System.out.println(ex.toString());
@@ -183,10 +181,9 @@ public class LoginActivity extends AppCompatActivity{
                                     if(tempPassword.equals(enteredPassword)){
                                         int tempId = response.getInt("Id");
                                         String tempName = response.getString("Name");
-                                        String tempUsername = response.getString("Username");
                                         String tempEmail = response.getString("Email");
                                         String tempProfImg = response.getString("ProfileImg");
-                                        User tempUser = new User(tempId, tempName, tempUsername, tempEmail, tempPassword, tempProfImg);
+                                        User tempUser = new User(tempId, tempName, tempEmail, tempPassword, tempProfImg);
                                         sendToGame(tempUser);
                                     }else{
                                         Toast.makeText(getApplicationContext(), "Incorrect password! Please check your information and try again.", Toast.LENGTH_SHORT).show();

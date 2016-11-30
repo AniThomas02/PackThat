@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import layout.FriendsFragment;
 import layout.HomeFragment;
@@ -28,7 +38,7 @@ import layout.ProfileFragment;
 public class MainActivity extends AppCompatActivity {
     FragmentPagerAdapter adapterViewPager;
     public static User MY_USER;
-    public ViewSwitcher nameSwitcher, usernameSwitcher, emailSwitcher;
+    public ViewSwitcher nameSwitcher, emailSwitcher;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,35 +134,82 @@ public class MainActivity extends AppCompatActivity {
 
     //region PROFILE
     public void editProfileInfo(View view){
+        //get all current variables
         Button button = (Button)findViewById(R.id.button_edit_or_save);
         nameSwitcher = (ViewSwitcher)findViewById(R.id.viewSwitcher_name);
-        usernameSwitcher = (ViewSwitcher)findViewById(R.id.viewswitcher_Username);
         emailSwitcher = (ViewSwitcher)findViewById(R.id.viewswitcher_email);
 
+        TextView viewName = (TextView)findViewById(R.id.textView_name);
+        EditText editName = (EditText)findViewById(R.id.editText_name);
+        TextView viewEmail = (TextView)findViewById(R.id.textView_email);
+        EditText editEmail = (EditText)findViewById(R.id.editText_email);
+
+        //check if they are editing or saving
         if(button.getText().equals("Edit Information")){
-            //prep name
-            TextView name = (TextView)findViewById(R.id.textView_name);
-            EditText editName = (EditText)findViewById(R.id.editText_name);
-            editName.setText(name.getText());
-            //prep username
-            TextView username = (TextView)findViewById(R.id.textView_username);
-            EditText editUserName = (EditText)findViewById(R.id.editText_username);
-            editUserName.setText(username.getText());
-            //prep email
-            TextView email = (TextView)findViewById(R.id.textView_email);
-            EditText editEmail = (EditText)findViewById(R.id.editText_email);
-            editEmail.setText(email.getText());
+            //change the edit texts to views
+            editName.setText(viewName.getText());
+            editEmail.setText(viewEmail.getText());
             //switch the views
             nameSwitcher.showNext();
-            usernameSwitcher.showNext();
             emailSwitcher.showNext();
             //change the button
             button.setText("Save Information");
         }else{
-            nameSwitcher.showPrevious();
-            usernameSwitcher.showPrevious();
-            emailSwitcher.showPrevious();
-            button.setText("Edit Information");
+            if(editName.getText().toString().equals("")){
+                Toast.makeText(getApplicationContext(), "Name cannot be blank to be save.", Toast.LENGTH_SHORT).show();
+                editName.requestFocus();
+            }else if(editEmail.getText().toString().equals("")){
+                Toast.makeText(getApplicationContext(), "Email cannot be blank to be save.", Toast.LENGTH_SHORT).show();
+                editEmail.requestFocus();
+            }else if(!(editEmail.getText().toString().matches("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$"))){
+                Toast.makeText(getApplicationContext(), "Email must be in proper email format.", Toast.LENGTH_SHORT).show();
+                editEmail.requestFocus();
+            }else{
+                updateUserInformation(editName.getText().toString(), editEmail.getText().toString());
+
+                viewName.setText(editName.getText());
+                viewEmail.setText(editEmail.getText());
+                nameSwitcher.showPrevious();
+                emailSwitcher.showPrevious();
+                button.setText("Edit Information");
+            }
+        }
+    }
+
+    public void updateUserInformation(String newName, String newEmail){
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            JSONObject params = new JSONObject();
+            params.put("name", newName);
+            params.put("email", newEmail);
+            params.put("id", User.Id);
+            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/updateUserInfo.php";
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                int tempId = response.getInt("Id");
+                                if(tempId >= 1){
+                                    Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "Error saving.", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch(Exception ex) {
+                                System.out.println(ex.toString());
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("LoginActivity", error.toString());
+                            System.out.println("Error");
+                        }
+                    });
+            requestQueue.add(jsObjRequest);
+        }catch (Exception e){
+            Log.i("LoginActivity", e.toString());
+            Toast.makeText(getApplicationContext(), "Error updating userInfo.", Toast.LENGTH_SHORT).show();
         }
     }
 
