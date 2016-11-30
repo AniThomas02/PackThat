@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity{
                         public void onResponse(JSONObject response) {
                             try {
                                 String tempEmail = response.getString("Email");
-                                if(!tempEmail.equals(enteredEmail)){
+                                if(!tempEmail.equalsIgnoreCase(enteredEmail)){
                                     registerUser(enteredEmail, enteredPassword);
                                 }else{
                                     Toast.makeText(getApplicationContext(), "User already in use. Try logging in or use another email.", Toast.LENGTH_SHORT).show();
@@ -162,19 +162,56 @@ public class LoginActivity extends AppCompatActivity{
     }
     //endregion
 
-
+    //region LOGIN METHODS
     private void attemptLogin(String email, String password) {
-        if(checkForUserInformation(email, password)){
-            User currUser = new User(0, "TestName", "TestUsername", email, password, "Default");
-            sendToGame(currUser);
-        }else {
-            Toast.makeText(getApplicationContext(), "Could not find user with that email/password.", Toast.LENGTH_SHORT).show();
+        checkForUserInformation(email, password);
+    }
+
+    private void checkForUserInformation(final String enteredEmail, final String enteredPassword){
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            JSONObject params = new JSONObject();
+            params.put("email", enteredEmail);
+            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/selectUser.php";
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                if(response != null){
+                                    String tempPassword = response.getString("Password");
+                                    if(tempPassword.equals(enteredPassword)){
+                                        int tempId = response.getInt("Id");
+                                        String tempName = response.getString("Name");
+                                        String tempUsername = response.getString("Username");
+                                        String tempEmail = response.getString("Email");
+                                        String tempProfImg = response.getString("ProfileImg");
+                                        User tempUser = new User(tempId, tempName, tempUsername, tempEmail, tempPassword, tempProfImg);
+                                        sendToGame(tempUser);
+                                    }else{
+                                        Toast.makeText(getApplicationContext(), "Incorrect password! Please check your information and try again.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "Unable to find a user with that email.", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch(Exception ex) {
+                                System.out.println(ex.toString());
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("LoginActivity", error.toString());
+                            System.out.println("Error");
+                        }
+                    });
+            requestQueue.add(jsObjRequest);
+        }catch (Exception e){
+            Log.i("LoginActivity", e.toString());
+            Toast.makeText(getApplicationContext(), "Error creating new user account.", Toast.LENGTH_SHORT).show();
         }
     }
-
-    private boolean checkForUserInformation(String email, String password){
-        return false;
-    }
+    //endregion
 
     private void sendToGame(User user){
         Intent gameIntent = new Intent(this, MainActivity.class);
