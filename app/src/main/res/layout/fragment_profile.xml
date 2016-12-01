@@ -13,17 +13,46 @@
         android:scaleType="fitXY"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:contentDescription="Profile Picture" />
+        android:contentDescription="Profile Picture"
+        android:onClick="switchToImageUpload" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Click on the image to change it"
-        android:id="@+id/textView_profile_image_instructions"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="2dp" />
-
+    <ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/viewSwitcher_profile_image"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/view_image1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Click on the image to change it"
+                android:id="@+id/textView_profile_image_instructions" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/view_image2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:gravity="center">
+            <Button
+                android:id="@+id/button_change_profile_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save Image"
+                android:background="#4052b5"
+                android:textColor="@color/colorAccent"
+                android:textSize="12sp"
+                android:paddingLeft="5sp"
+                android:paddingRight="5sp"/>
+        </LinearLayout>
+    </ViewSwitcher>
     <LinearLayout
         android:id="@+id/layout_name"
         android:layout_width="match_parent"

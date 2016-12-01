@@ -1,7 +1,9 @@
 package com.example.a.packthat;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -38,7 +41,8 @@ import layout.ProfileFragment;
 public class MainActivity extends AppCompatActivity {
     FragmentPagerAdapter adapterViewPager;
     public static User MY_USER;
-    public ViewSwitcher nameSwitcher, emailSwitcher;
+    public ViewSwitcher imageSwitcher, nameSwitcher, emailSwitcher;
+    private static final int RESULT_LOAD_IMAGE = 1;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +137,15 @@ public class MainActivity extends AppCompatActivity {
     //endregion
 
     //region PROFILE
+    public void switchToImageUpload(View view){
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
+    }
+
+    public void changeProfileImage(){
+
+    }
+
     public void editProfileInfo(View view){
         //get all current variables
         Button button = (Button)findViewById(R.id.button_edit_or_save);
@@ -152,31 +165,52 @@ public class MainActivity extends AppCompatActivity {
             //switch the views
             nameSwitcher.showNext();
             emailSwitcher.showNext();
+            //request focus on the first entry
+            editName.requestFocus();
             //change the button
             button.setText("Save Information");
         }else{
-            if(editName.getText().toString().equals("")){
+            String editNameS = editName.getText().toString();
+            String editEmailS = editEmail.getText().toString();
+            if(!editNameS.equals("")){
+                if(!editEmailS.equals("")){
+                    if(editEmailS.matches("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$")){
+                        if(!editNameS.equals(User.Name) || !editEmailS.equals(User.Email) ){
+                            updateUserInformation(editNameS, editEmailS);
+                        }else{
+                            switchInfoToView();
+                        }
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Email must be in proper email format.", Toast.LENGTH_SHORT).show();
+                        editEmail.requestFocus();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), "Email cannot be blank to be save.", Toast.LENGTH_SHORT).show();
+                    editEmail.requestFocus();
+                }
+            }else{
                 Toast.makeText(getApplicationContext(), "Name cannot be blank to be save.", Toast.LENGTH_SHORT).show();
                 editName.requestFocus();
-            }else if(editEmail.getText().toString().equals("")){
-                Toast.makeText(getApplicationContext(), "Email cannot be blank to be save.", Toast.LENGTH_SHORT).show();
-                editEmail.requestFocus();
-            }else if(!(editEmail.getText().toString().matches("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$"))){
-                Toast.makeText(getApplicationContext(), "Email must be in proper email format.", Toast.LENGTH_SHORT).show();
-                editEmail.requestFocus();
-            }else{
-                updateUserInformation(editName.getText().toString(), editEmail.getText().toString());
-
-                viewName.setText(editName.getText());
-                viewEmail.setText(editEmail.getText());
-                nameSwitcher.showPrevious();
-                emailSwitcher.showPrevious();
-                button.setText("Edit Information");
             }
         }
     }
 
-    public void updateUserInformation(String newName, String newEmail){
+    public void switchInfoToView(){
+        //grab profileInfo
+        TextView viewName = (TextView)findViewById(R.id.textView_name);
+        EditText editName = (EditText)findViewById(R.id.editText_name);
+        TextView viewEmail = (TextView)findViewById(R.id.textView_email);
+        EditText editEmail = (EditText)findViewById(R.id.editText_email);
+        Button button = (Button)findViewById(R.id.button_edit_or_save);
+        //switch back to viewInfo
+        viewName.setText(editName.getText());
+        viewEmail.setText(editEmail.getText());
+        nameSwitcher.showPrevious();
+        emailSwitcher.showPrevious();
+        button.setText("Edit Information");
+    }
+
+    public void updateUserInformation(final String newName, final String newEmail){
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             JSONObject params = new JSONObject();
@@ -192,6 +226,9 @@ public class MainActivity extends AppCompatActivity {
                                 int tempId = response.getInt("Id");
                                 if(tempId >= 1){
                                     Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                                    User.Name = newName;
+                                    User.Email = newEmail;
+                                    switchInfoToView();
                                 }else{
                                     Toast.makeText(getApplicationContext(), "Error saving.", Toast.LENGTH_SHORT).show();
                                 }
@@ -216,9 +253,9 @@ public class MainActivity extends AppCompatActivity {
     public void displayPasswordPopup(View view){
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_change_password, null);
-        //EditText oldPass = (EditText) alertLayout.findViewById(R.id.editText_old_pass);
-        //EditText newPass = (EditText) alertLayout.findViewById(R.id.editText_new_pass);
-        //EditText newPass2 = (EditText) alertLayout.findViewById(R.id.editText_new_pass2);
+        final EditText oldPass = (EditText) alertLayout.findViewById(R.id.editText_old_pass);
+        final EditText newPass = (EditText) alertLayout.findViewById(R.id.editText_new_pass);
+        final EditText newPass2 = (EditText) alertLayout.findViewById(R.id.editText_new_pass2);
         Button password = (Button) alertLayout.findViewById(R.id.button_change_password);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -230,10 +267,83 @@ public class MainActivity extends AppCompatActivity {
         password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                String oldPassS = oldPass.getText().toString();
+                String newPassS = newPass.getText().toString();
+                String newPass2S = newPass2.getText().toString();
+                if(!oldPassS.equals("") && !newPassS.equals("") && !newPass2S.equals("")){
+                    if(oldPassS.equals(User.Password)){
+                        if(newPassS.equals(newPass2S)){
+                            if(isNewPasswordValid(newPassS)){
+                                updatePassword(newPassS);
+                                dialog.dismiss();
+                            }
+                        }else{
+                            Toast.makeText(getApplicationContext(), "New passwords do not match.", Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Old password is incorrect.", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), "Make sure all entries are filled out.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         dialog.show();
+    }
+
+    private boolean isNewPasswordValid(String password) {
+        if(password.length() < 6){
+            Toast.makeText(getApplicationContext(), "New password is too short, it must be at least 6 characters in length.", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(!password.matches(".*\\d+.*")){
+            Toast.makeText(getApplicationContext(), "New password must contain a number.", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(!password.matches(".*[a-z]+.*")){
+            Toast.makeText(getApplicationContext(), "New password must contain a lowercase letter.", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(!password.matches(".*[A-Z]+.*")){
+            Toast.makeText(getApplicationContext(), "New password must contain an uppercase letter.", Toast.LENGTH_SHORT).show();
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public void updatePassword(final String newPass){
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            JSONObject params = new JSONObject();
+            params.put("password", newPass);
+            params.put("id", User.Id);
+            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/updateUserPassword.php";
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                int tempId = response.getInt("Id");
+                                if(tempId >= 1){
+                                    Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                                    User.Password = newPass;
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "Error saving.", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch(Exception ex) {
+                                System.out.println(ex.toString());
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("LoginActivity", error.toString());
+                            System.out.println("Error");
+                        }
+                    });
+            requestQueue.add(jsObjRequest);
+        }catch (Exception e){
+            Log.i("LoginActivity", e.toString());
+            Toast.makeText(getApplicationContext(), "Error updating userInfo.", Toast.LENGTH_SHORT).show();
+        }
     }
     //endregion
 
@@ -285,4 +395,20 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
     //endregion
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null){
+            Uri selectedImage = data.getData();
+            ImageView profileImage = (ImageView)findViewById(R.id.imageView_profile);
+            profileImage.setImageURI(null);
+            profileImage.setImageURI(selectedImage);
+
+            //switch over to my change image button
+            imageSwitcher = (ViewSwitcher)findViewById(R.id.viewSwitcher_profile_image);
+            imageSwitcher.reset();
+            imageSwitcher.showNext();
+        }
+    }
 }
