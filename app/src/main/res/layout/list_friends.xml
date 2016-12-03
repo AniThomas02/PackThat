@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/default_profile"/>
+
+    <LinearLayout
+        android:id="@+id/layout_friend_list_username_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_list_userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10sp"
+            android:textSize="24sp"
+            android:textColor="#4052b5"
+            android:text="UserName"/>
+        <TextView
+            android:id="@+id/textView_list_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10sp"
+            android:textSize="18sp"
+            android:textColor="#38843c"
+            android:text="Email@email.com"
+            />
+
+    </LinearLayout>
+</LinearLayout>

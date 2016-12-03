@@ -127,7 +127,6 @@ public class LoginActivity extends AppCompatActivity{
             params.put("name", tempName);
             params.put("email", email);
             params.put("password", password);
-            params.put("profileImg", "Default");
             String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/addUser.php";
             JsonObjectRequest jsObjRequest = new JsonObjectRequest
                     (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
@@ -148,13 +147,13 @@ public class LoginActivity extends AppCompatActivity{
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.i("LoginActivity", error.toString());
+                            Log.i("LoginActivity", error.getStackTrace().toString());
                             System.out.println("Error");
                         }
                     });
             requestQueue.add(jsObjRequest);
         }catch (Exception e){
-            Log.i("LoginActivity", e.toString());
+            Log.i("LoginActivity", e.getStackTrace().toString());
             Toast.makeText(getApplicationContext(), "Error creating new user account.", Toast.LENGTH_SHORT).show();
         }
     }
