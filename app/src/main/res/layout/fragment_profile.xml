@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/layout_user_info">
 
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:id="@+id/imageView_profile"

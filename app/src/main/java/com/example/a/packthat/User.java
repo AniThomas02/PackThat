@@ -3,7 +3,6 @@ package com.example.a.packthat;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 
 import java.io.Serializable;
 
@@ -22,10 +21,5 @@ public class User implements Serializable{
         Password = password;
         ProfileImg = profileImg;
         profileImageBitmap = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.default_profile);
-        getImageBitmap();
-    }
-
-    private void getImageBitmap(){
-
     }
 }
