@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/layout_events"
-        android:weightSum="2">
+        android:weightSum="2"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:orientation="vertical"
@@ -51,16 +52,16 @@
                     android:onClick="displayPersonalEvent" />
             </LinearLayout>
 
-            <ScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/scrollView_personal" >
+                android:id="@+id/layout_personal_events_list" >
 
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/listView_personal" />
-            </ScrollView>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -74,7 +75,8 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/layout_group_header">
 
                 <TextView
                     android:layout_width="208dp"
@@ -97,20 +99,19 @@
                     android:text="Add New"
                     android:id="@+id/button_add_group"
                     android:background="#4052b5"
-                    android:textColor="@color/colorAccent"
-                    android:onClick="displayGroupEvent" />
+                    android:textColor="@color/colorAccent" />
             </LinearLayout>
 
-            <ScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/scrollView_groups">
+                android:id="@+id/layout_group_events_list">
 
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/listView_group" />
-            </ScrollView>
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -420,74 +419,6 @@ public class MainActivity extends AppCompatActivity {
             Log.i("MainActivity", e.toString());
             Toast.makeText(getApplicationContext(), "Error updating userInfo.", Toast.LENGTH_SHORT).show();
         }
-    }
-    //endregion
-
-    //region HOME PAGE
-    public void displayViewEventPopup(View view){
-        LayoutInflater inflater = getLayoutInflater();
-        View viewEventLayout = inflater.inflate(R.layout.dialog_add_event, null);
-        Button manageEvent = (Button) viewEventLayout.findViewById(R.id.button_manage_event);
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("View Event");
-        alertDialog.setView(viewEventLayout);
-        alertDialog.setCancelable(true);
-
-        final AlertDialog dialog = alertDialog.create();
-        manageEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
-
-    public void displayPersonalEvent(View view){
-        displayCreateEventView(0);
-    }
-
-    public void displayGroupEvent(View view){
-        displayCreateEventView(1);
-    }
-
-    //0 is personal, 1 is private
-    public void displayCreateEventView(int eventType){
-        LayoutInflater inflater = getLayoutInflater();
-        View createEventLayout = inflater.inflate(R.layout.dialog_add_event, null);
-        final EditText createName = (EditText) createEventLayout.findViewById(R.id.editText_create_name);
-        final EditText createDescription = (EditText) createEventLayout.findViewById(R.id.editText_create_description);
-        final DatePicker createStartDate = (DatePicker) createEventLayout.findViewById(R.id.date_start);
-        Button createEvent = (Button) createEventLayout.findViewById(R.id.button_create_event);
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Create Event");
-        alertDialog.setView(createEventLayout);
-        alertDialog.setCancelable(true);
-
-        final AlertDialog dialog = alertDialog.create();
-        createEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String eventName = createName.getText().toString();
-                String eventDescription = createDescription.getText().toString();
-                if(!eventName.equals("")){
-                    if(!eventDescription.equals("")) {
-                        //if(createStartDate.getDateFrom() != null){
-
-                        //}
-                        dialog.dismiss();
-                    }else{
-                        Toast.makeText(getApplicationContext(), "The event must have a description.", Toast.LENGTH_SHORT).show();
-                    }
-                }else {
-                    Toast.makeText(getApplicationContext(), "The event has no name!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        dialog.show();
     }
     //endregion
 
