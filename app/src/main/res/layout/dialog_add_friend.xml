@@ -23,7 +23,8 @@
             android:textSize="16sp"
             android:textColor="#4052b5"
             android:paddingRight="4dp"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:labelFor="@+id/editText_add_friend_email"/>
 
         <EditText
             android:id="@+id/editText_add_friend_email"

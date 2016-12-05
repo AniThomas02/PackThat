@@ -1,30 +1,40 @@
 package layout;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.LruCache;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.example.a.packthat.Friend;
 import com.example.a.packthat.FriendsListAdapter;
 import com.example.a.packthat.R;
 import com.example.a.packthat.User;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -42,7 +52,7 @@ public class FriendsFragment extends Fragment {
     private int page;
     private ArrayList<Friend> friendsList;
     private OnFragmentInteractionListener mListener;
-    private static FriendsListAdapter friendsListAdapter;
+    public static FriendsListAdapter friendsListAdapter;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -75,14 +85,15 @@ public class FriendsFragment extends Fragment {
         friendsListAdapter = new FriendsListAdapter(getContext(), R.id.listView_friends, friendsList);
 
         friendsListView.setAdapter(friendsListAdapter);
+        //viewFriend dialog
         friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Friend friend = friendsList.get(position);
+                final Friend friend = friendsList.get(position);
 
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View viewFriendLayout = inflater.inflate(R.layout.dialog_view_friend, null);
-                Button deleteFriend = (Button) viewFriendLayout.findViewById(R.id.button_remove_friend);
+                final Button deleteFriend = (Button) viewFriendLayout.findViewById(R.id.button_remove_friend);
                 TextView friendName = (TextView) viewFriendLayout.findViewById(R.id.textView_view_friend_name);
                 friendName.setText(friend.friendName);
                 TextView friendEmail = (TextView) viewFriendLayout.findViewById(R.id.textView_view_friend_email);
@@ -110,7 +121,40 @@ public class FriendsFragment extends Fragment {
                 deleteFriend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
+                        try {
+                            RequestQueue requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
+                            JSONObject params = new JSONObject();
+                            params.put("userId", User.Id);
+                            params.put("friendId", friend.friendId);
+                            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/deleteFriend.php";
+                            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            try{
+                                                int affected = response.getInt("affected");
+                                                if(affected >= 1){
+                                                    Toast.makeText(getContext().getApplicationContext(), "Successfully deleted.", Toast.LENGTH_SHORT).show();
+                                                    friendsList.remove(friend);
+                                                    friendsListAdapter.notifyDataSetChanged();
+                                                    dialog.dismiss();
+                                                }
+                                            }catch (Exception e){
+                                                Toast.makeText(getContext().getApplicationContext(), "Error deleting friend", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Log.i("FriendsFragment", error.getStackTrace().toString());
+                                            System.out.println("Error");
+                                        }
+                                    });
+                            requestQueue.add(jsObjRequest);
+                        }catch (Exception e){
+                            Log.i("FriendsFragment", e.getStackTrace().toString());
+                            Toast.makeText(getContext().getApplicationContext(), "Error deleting friend.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
                 dialog.show();
@@ -123,13 +167,6 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_friends, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//          mListener.onFragmentInteraction(uri);
-//        }
     }
 
     @Override
