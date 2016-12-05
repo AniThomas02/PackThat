@@ -5,18 +5,6 @@
     android:weightSum="1"
     android:id="@+id/layout_personal_and_group_events">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Welcome User!"
-        android:id="@+id/textView_welcome"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:textStyle="bold"
-        android:textSize="28sp" />
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -60,7 +48,7 @@
                     android:id="@+id/button_add_personal"
                     android:background="#4052b5"
                     android:textColor="@color/colorAccent"
-                    android:onClick="displayCreateEventView" />
+                    android:onClick="displayPersonalEvent" />
             </LinearLayout>
 
             <ScrollView
@@ -110,7 +98,7 @@
                     android:id="@+id/button_add_group"
                     android:background="#4052b5"
                     android:textColor="@color/colorAccent"
-                    android:onClick="displayCreateEventView" />
+                    android:onClick="displayGroupEvent" />
             </LinearLayout>
 
             <ScrollView

@@ -5,28 +5,29 @@
     android:layout_height="match_parent"
     android:padding="5dp">
 
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/imageView_friend_list_profile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/default_profile"/>
+        android:layout_marginRight="8dp" />
 
     <LinearLayout
         android:id="@+id/layout_friend_list_username_email"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView_list_userName"
-            android:layout_width="wrap_content"
+            android:id="@+id/textView_friend_list_name"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10sp"
             android:textSize="24sp"
             android:textColor="#4052b5"
-            android:text="UserName"/>
+            android:text="Friend Name"/>
         <TextView
-            android:id="@+id/textView_list_email"
-            android:layout_width="wrap_content"
+            android:id="@+id/textView_friend_list_email"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10sp"
             android:textSize="18sp"

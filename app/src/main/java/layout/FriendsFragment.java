@@ -7,9 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.a.packthat.Friend;
+import com.example.a.packthat.FriendsListAdapter;
 import com.example.a.packthat.R;
 import com.example.a.packthat.User;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,18 +30,21 @@ public class FriendsFragment extends Fragment {
     //instance variables
     private String title;
     private int page;
+    private ArrayList<Friend> friendsList;
     private OnFragmentInteractionListener mListener;
+    private static FriendsListAdapter friendsListAdapter;
 
     public FriendsFragment() {
         // Required empty public constructor
     }
 
     //newInstance constructor for creating the fragment with arguments
-    public static FriendsFragment newInstance(int page, String title) {
+    public static FriendsFragment newInstance(int page, String title, ArrayList<Friend> friendsList) {
         FriendsFragment friendsFragment = new FriendsFragment();
         Bundle args = new Bundle();
         args.putInt("pageNumber", page);
         args.putString("pageTitle", title);
+        args.putSerializable("friendsList", friendsList);
         friendsFragment.setArguments(args);
         return friendsFragment;
     }
@@ -44,11 +54,34 @@ public class FriendsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         page = getArguments().getInt("pageNumber", 0);
         title = getArguments().getString("pageTitle");
+        friendsList = (ArrayList<Friend>) getArguments().getSerializable("friendsList");
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        ListView friendsListView = (ListView)getView().findViewById(R.id.listView_friends);
+        friendsListAdapter = new FriendsListAdapter(getContext(), R.id.listView_friends, friendsList);
+
+        friendsListView.setAdapter(friendsListAdapter);
+        friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Friend friend = friendsList.get(position);
+                Toast.makeText(getContext(), friend.friendName, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(friendsList != null && friendsList.size() != 0){
+
+        }else{
+            Toast.makeText(getContext().getApplicationContext(), "No Friends.", Toast.LENGTH_SHORT).show();
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_friends, container, false);
     }

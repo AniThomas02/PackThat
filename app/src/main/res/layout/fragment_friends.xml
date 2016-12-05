@@ -5,17 +5,17 @@
     tools:context="layout.FriendsFragment"
     android:orientation="vertical">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
+        android:id="@+id/layout_friendList"
         android:layout_weight=".90">
 
         <ListView
             android:id="@+id/listView_friends"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </ScrollView>
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_display_add_friend_popup"

@@ -47,8 +47,8 @@ public class GroupEventActivity extends AppCompatActivity{
             switch (position) {
                 case 0: // Fragment #0 - Group Chat
                     return ChatLogFragment.newInstance(0, "ChatLog");
-                case 1: // Fragment # 1 - Friends in Event
-                    return FriendsFragment.newInstance(1, "Friends");
+                //case 1: // Fragment # 1 - Friends in Event
+                //    return FriendsFragment.newInstance(1, "Friends", );
                 case 2: // Fragment # 2 - Group Lists
                     return GroupListFragment.newInstance(2, "Group Lists");
                 default: // Fragment # 3 - Private Lists

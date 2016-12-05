@@ -30,9 +30,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +50,7 @@ import layout.ProfileFragment;
 public class MainActivity extends AppCompatActivity {
     FragmentPagerAdapter adapterViewPager;
     public static User MY_USER;
+    public static ArrayList<Friend> friendsList;
     public ViewSwitcher imageSwitcher, nameSwitcher, emailSwitcher;
     private static final int RESULT_LOAD_IMAGE = 1;
     Bitmap newPhoto;
@@ -59,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         MY_USER = (User) gameIntent.getSerializableExtra("user");
         String newUser = gameIntent.getStringExtra("newUser");
 
+        friendsList = new ArrayList<>();
+        getFriends();
+
         setContentView(R.layout.activity_home);
         ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
@@ -68,6 +74,45 @@ public class MainActivity extends AppCompatActivity {
             vpPager.setCurrentItem(1);
         }else{
             vpPager.setCurrentItem(2);
+        }
+    }
+
+    public void getFriends(){
+        try {
+            final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            JSONObject params = new JSONObject();
+            params.put("id", User.Id);
+            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/selectAllFriends.php";
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                if(response != null){
+                                    JSONArray friendResonse = response.getJSONArray("array");
+                                    Friend getFriend;
+                                    for(int i =0; i < friendResonse.length(); i++){
+                                        JSONObject row = friendResonse.getJSONObject(i);
+                                        getFriend = new Friend(row.getInt("id"), row.getString("name"), row.getString("email"), row.getString("profileImg"));
+                                        friendsList.add(getFriend);
+                                    }
+                                }
+                            } catch(Exception ex) {
+                                System.out.println(ex.toString());
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("MainActivity", error.toString());
+                            System.out.println("Error");
+                            Toast.makeText(getApplicationContext(), "Error getting friends.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            requestQueue.add(jsObjRequest);
+        }catch (Exception e){
+            Log.i("MainActivity", e.toString());
+            Toast.makeText(getApplicationContext(), "Error Accessing DB.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -87,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: // Fragment # 0 - Friends
-                    return FriendsFragment.newInstance(0, "Friends");
+                    return FriendsFragment.newInstance(0, "Friends" , friendsList);
                 case 1: // Fragment # 1 - Profile
                     return ProfileFragment.newInstance(1, "My Profile");
                 default:// Fragment # 2 - Home
@@ -201,7 +246,6 @@ public class MainActivity extends AppCompatActivity {
                     return params;
                 }
             };
-
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
         }catch (Exception e){
@@ -443,7 +487,7 @@ public class MainActivity extends AppCompatActivity {
         displayCreateEventView(0);
     }
 
-    public void displayGroupEvent(){
+    public void displayGroupEvent(View view){
         displayCreateEventView(1);
     }
 
