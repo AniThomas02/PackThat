@@ -148,26 +148,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //region FRIENDS
-    public void displayFriendDialog(View view){
-        LayoutInflater inflater = getLayoutInflater();
-        View viewFriendLayout = inflater.inflate(R.layout.dialog_view_friend, null);
-        Button deleteFriend = (Button) viewFriendLayout.findViewById(R.id.button_remove_friend);
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("View Friend");
-        alert.setView(viewFriendLayout);
-        alert.setCancelable(true);
-
-        final AlertDialog dialog = alert.create();
-        deleteFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
-
     public void displayAddFriendDialog(View view){
         LayoutInflater inflater = getLayoutInflater();
         View addFriendLayout = inflater.inflate(R.layout.dialog_add_friend, null);

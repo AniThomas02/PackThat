@@ -1,16 +1,26 @@
 package layout;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.LruCache;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.Volley;
 import com.example.a.packthat.Friend;
 import com.example.a.packthat.FriendsListAdapter;
 import com.example.a.packthat.R;
@@ -69,7 +79,41 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Friend friend = friendsList.get(position);
-                Toast.makeText(getContext(), friend.friendName, Toast.LENGTH_SHORT).show();
+
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View viewFriendLayout = inflater.inflate(R.layout.dialog_view_friend, null);
+                Button deleteFriend = (Button) viewFriendLayout.findViewById(R.id.button_remove_friend);
+                TextView friendName = (TextView) viewFriendLayout.findViewById(R.id.textView_view_friend_name);
+                friendName.setText(friend.friendName);
+                TextView friendEmail = (TextView) viewFriendLayout.findViewById(R.id.textView_view_friend_email);
+                friendEmail.setText(friend.email);
+                NetworkImageView friendProfImage = (NetworkImageView) viewFriendLayout.findViewById(R.id.imageView_view_friend_profile);
+                RequestQueue requestQueue;
+                ImageLoader imageLoader;
+                requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
+                imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache(){
+                    private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(10);
+                    public void putBitmap(String url, Bitmap bitmap){
+                        cache.put(url, bitmap);
+                    }
+                    public Bitmap getBitmap(String url){
+                        return cache.get(url);
+                    }
+                });
+                friendProfImage.setImageUrl("http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/uploads/" + friend.profileImg, imageLoader);
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                alert.setView(viewFriendLayout);
+                alert.setCancelable(true);
+
+                final AlertDialog dialog = alert.create();
+                deleteFriend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
     }
@@ -77,11 +121,6 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(friendsList != null && friendsList.size() != 0){
-
-        }else{
-            Toast.makeText(getContext().getApplicationContext(), "No Friends.", Toast.LENGTH_SHORT).show();
-        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_friends, container, false);
     }
