@@ -78,6 +78,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static class MyPagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_ITEMS = 3;
+
+        public MyPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0: // Fragment # 0 - Friends
+                    return FriendsFragment.newInstance(0, "Friends" , friendsList);
+                case 1: // Fragment # 1 - Profile
+                    return ProfileFragment.newInstance(1, "My Profile");
+                default:// Fragment # 2 - Home
+                    return HomeFragment.newInstance(2, "Home");
+            }
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page " + position;
+        }
+    }
+
+    //region FRIENDS
     public void getFriends(){
         try {
             final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -114,152 +146,6 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             Log.i("MainActivity", e.toString());
             Toast.makeText(getApplicationContext(), "Error Accessing DB.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public static class MyPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 3;
-
-        public MyPagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
-
-        @Override
-        public int getCount() {
-            return NUM_ITEMS;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0: // Fragment # 0 - Friends
-                    return FriendsFragment.newInstance(0, "Friends" , friendsList);
-                case 1: // Fragment # 1 - Profile
-                    return ProfileFragment.newInstance(1, "My Profile");
-                default:// Fragment # 2 - Home
-                    return HomeFragment.newInstance(2, "Home");
-            }
-        }
-
-        // Returns the page title for the top indicator
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "Page " + position;
-        }
-    }
-
-    //region FRIENDS
-    public void displayAddFriendDialog(View view){
-        LayoutInflater inflater = getLayoutInflater();
-        View addFriendLayout = inflater.inflate(R.layout.dialog_add_friend, null);
-        final EditText addFriendEmail = (EditText) addFriendLayout.findViewById(R.id.editText_add_friend_email);
-        final Button addFriend = (Button) addFriendLayout.findViewById(R.id.button_add_friend);
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Add Friend");
-        alert.setView(addFriendLayout);
-        alert.setCancelable(true);
-
-        final AlertDialog dialog = alert.create();
-        addFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newFriendEmail = addFriendEmail.getText().toString();
-                if(isValidEmail(newFriendEmail)){
-                    addFriend(newFriendEmail);
-                    dialog.dismiss();
-                }
-            }
-        });
-        dialog.show();
-    }
-
-    private boolean isValidEmail(String email) {
-        if (!email.equals("")) {
-            if (email.matches("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$")) {
-                return true;
-            }else{
-                Toast.makeText(getApplicationContext(), "Email must be in a proper emailing format (e.g: email@email.com)", Toast.LENGTH_SHORT).show();
-            }
-        }else{
-            Toast.makeText(getApplicationContext(), "You need to add a friend's email.", Toast.LENGTH_SHORT).show();
-        }
-        return false;
-    }
-
-    public void addFriend(String friendEmail){
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            JSONObject params = new JSONObject();
-            params.put("email", friendEmail);
-            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/selectFriend.php";
-            JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try{
-                                if(response != null){
-                                    int friendId = response.getInt("Id");
-                                    String friendName = response.getString("Name");
-                                    String friendEmail = response.getString("Email");
-                                    String friendImg = response.getString("ProfileImg");
-                                    Friend newFriend = new Friend(friendId, friendName, friendEmail,friendImg);
-                                    addFriendToDatabase(newFriend);
-                                }else{
-                                    Toast.makeText(getApplicationContext(), "No user has that email address.", Toast.LENGTH_SHORT).show();
-                                }
-                            }catch (Exception e){
-                                Toast.makeText(getApplicationContext(), "Error finding friend", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.i("LoginActivity", error.getStackTrace().toString());
-                            System.out.println("Error");
-                        }
-                    });
-            requestQueue.add(jsObjRequest);
-        }catch (Exception e){
-            Log.i("LoginActivity", e.getStackTrace().toString());
-            Toast.makeText(getApplicationContext(), "Error creating new user account.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void addFriendToDatabase(final Friend newFriend){
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            JSONObject params = new JSONObject();
-            params.put("userId", User.Id);
-            params.put("friendId", newFriend.friendId);
-            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/addFriend.php";
-            JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try{
-                                if(response != null){
-                                    int affected = response.getInt("affected");
-                                    if(affected == 1){
-                                        friendsList.add(newFriend);
-                                        adapterViewPager.notifyDataSetChanged();
-                                    }
-                                }
-                            }catch (Exception e){
-                                Toast.makeText(getApplicationContext(), "Error finding friend", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.i("LoginActivity", error.getStackTrace().toString());
-                            System.out.println("Error");
-                        }
-                    });
-            requestQueue.add(jsObjRequest);
-        }catch (Exception e){
-            Log.i("LoginActivity", e.getStackTrace().toString());
-            Toast.makeText(getApplicationContext(), "Error creating new user account.", Toast.LENGTH_SHORT).show();
         }
     }
     //endregion

@@ -81,6 +81,35 @@ public class FriendsFragment extends Fragment {
     public void onStart(){
         super.onStart();
 
+        Button addFriendButton = (Button)getView().findViewById(R.id.button_display_add_friend_popup);
+        addFriendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View addFriendLayout = inflater.inflate(R.layout.dialog_add_friend, null);
+                final EditText addFriendEmail = (EditText) addFriendLayout.findViewById(R.id.editText_add_friend_email);
+                final Button addFriend = (Button) addFriendLayout.findViewById(R.id.button_add_friend);
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                alert.setTitle("Add Friend");
+                alert.setView(addFriendLayout);
+                alert.setCancelable(true);
+
+                final AlertDialog dialog = alert.create();
+                addFriend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String newFriendEmail = addFriendEmail.getText().toString();
+                        if(isValidEmail(newFriendEmail)){
+                            addFriend(newFriendEmail);
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                dialog.show();
+            }
+        });
+
         ListView friendsListView = (ListView)getView().findViewById(R.id.listView_friends);
         friendsListAdapter = new FriendsListAdapter(getContext(), R.id.listView_friends, friendsList);
 
@@ -160,6 +189,95 @@ public class FriendsFragment extends Fragment {
                 dialog.show();
             }
         });
+    }
+
+    private boolean isValidEmail(String email) {
+        if (!email.equals("")) {
+            if (email.matches("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$")) {
+                return true;
+            }else{
+                Toast.makeText(getContext().getApplicationContext(), "Email must be in a proper emailing format (e.g: email@email.com)", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(getContext().getApplicationContext(), "You need to add a friend's email.", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
+    public void addFriend(String friendEmail){
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
+            JSONObject params = new JSONObject();
+            params.put("email", friendEmail);
+            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/selectFriend.php";
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try{
+                                if(response != null){
+                                    int friendId = response.getInt("Id");
+                                    String friendName = response.getString("Name");
+                                    String friendEmail = response.getString("Email");
+                                    String friendImg = response.getString("ProfileImg");
+                                    Friend newFriend = new Friend(friendId, friendName, friendEmail,friendImg);
+                                    addFriendToDatabase(newFriend);
+                                }else{
+                                    Toast.makeText(getContext().getApplicationContext(), "No user has that email address.", Toast.LENGTH_SHORT).show();
+                                }
+                            }catch (Exception e){
+                                Toast.makeText(getContext().getApplicationContext(), "Error finding friend", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("LoginActivity", error.getStackTrace().toString());
+                            System.out.println("Error");
+                        }
+                    });
+            requestQueue.add(jsObjRequest);
+        }catch (Exception e){
+            Log.i("LoginActivity", e.getStackTrace().toString());
+            Toast.makeText(getContext().getApplicationContext(), "Error creating new user account.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void addFriendToDatabase(final Friend newFriend){
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
+            JSONObject params = new JSONObject();
+            params.put("userId", User.Id);
+            params.put("friendId", newFriend.friendId);
+            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/addFriend.php";
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try{
+                                if(response != null){
+                                    int affected = response.getInt("affected");
+                                    if(affected == 1){
+                                        friendsList.add(newFriend);
+                                        friendsListAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                            }catch (Exception e){
+                                Toast.makeText(getContext().getApplicationContext(), "Error finding friend", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("LoginActivity", error.getStackTrace().toString());
+                            System.out.println("Error");
+                        }
+                    });
+            requestQueue.add(jsObjRequest);
+        }catch (Exception e){
+            Log.i("LoginActivity", e.getStackTrace().toString());
+            Toast.makeText(getContext().getApplicationContext(), "Error creating new user account.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
