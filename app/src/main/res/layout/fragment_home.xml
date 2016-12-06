@@ -42,7 +42,8 @@
                 android:id="@+id/button_add_personal_event"
                 android:background="#4052b5"
                 android:textColor="@color/colorAccent"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                android:onClick="displayPersonalEvent" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,7 +95,8 @@
                 android:id="@+id/button_add_group_event"
                 android:background="#4052b5"
                 android:textColor="@color/colorAccent"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                android:onClick="displayGroupEvent" />
         </LinearLayout>
 
         <LinearLayout

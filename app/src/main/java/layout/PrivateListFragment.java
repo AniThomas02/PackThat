@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.a.packthat.Event;
 import com.example.a.packthat.R;
 
 /**
@@ -20,20 +21,17 @@ import com.example.a.packthat.R;
  */
 public class PrivateListFragment extends Fragment {
     //instance variables
-    private String title;
-    private int page;
-    private OnFragmentInteractionListener mListener;
+    private int eventId;
 
     public PrivateListFragment() {
         // Required empty public constructor
     }
 
     //newInstance constructor for creating the fragment with arguments
-    public static PrivateListFragment newInstance(int page, String title) {
+    public static PrivateListFragment newInstance(int eventId) {
         PrivateListFragment privateListFragment = new PrivateListFragment();
         Bundle args = new Bundle();
-        args.putInt("pageNumber", page);
-        args.putString("pageTitle", title);
+        args.putInt("eventId", eventId);
         privateListFragment.setArguments(args);
         return privateListFragment;
     }
@@ -41,8 +39,7 @@ public class PrivateListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("pageNumber", 0);
-        title = getArguments().getString("pageTitle");
+        this.eventId = getArguments().getInt("eventId", -1);
     }
 
     @Override
@@ -52,28 +49,21 @@ public class PrivateListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_private_list, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     /**

@@ -22,9 +22,6 @@ import com.example.a.packthat.User;
 
 public class ProfileFragment extends Fragment {
     // Store instance variables
-    private String title;
-    private int page;
-    private OnFragmentInteractionListener mListener;
     private NetworkImageView profileImage;
 
     public ProfileFragment() {
@@ -32,11 +29,9 @@ public class ProfileFragment extends Fragment {
     }
 
     // newInstance constructor for creating fragment with arguments
-    public static ProfileFragment newInstance(int page, String title) {
+    public static ProfileFragment newInstance() {
         ProfileFragment profileFragment = new ProfileFragment();
         Bundle args = new Bundle();
-        args.putInt("pageNumber", page);
-        args.putString("pageTitle", title);
         profileFragment.setArguments(args);
         return profileFragment;
     }
@@ -44,8 +39,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("pageNumber", 0);
-        title = getArguments().getString("pageTitle");
     }
 
     @Override
@@ -94,26 +87,16 @@ public class ProfileFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        //mListener = null;
     }
 
     /**

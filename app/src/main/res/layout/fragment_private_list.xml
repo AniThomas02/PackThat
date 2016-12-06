@@ -4,12 +4,12 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context="layout.FriendsFragment"
 android:orientation="vertical"
-android:id="@+id/layout_private_list">
+android:id="@+id/layout_private_list_and_button">
 
-<ScrollView
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/scrollView_private_list"
+    android:id="@+id/layout_private_list"
     android:layout_weight=".90" >
 
     <ExpandableListView
@@ -18,7 +18,7 @@ android:id="@+id/layout_private_list">
         android:id="@+id/expandableListView_private_list"
         android:layout_gravity="right"
         android:layout_weight=".90" />
-</ScrollView>
+</LinearLayout>
 
 <Button
     android:id="@+id/button_add_private_List"

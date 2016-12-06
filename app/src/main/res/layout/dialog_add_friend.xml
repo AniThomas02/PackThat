@@ -42,7 +42,7 @@
         android:text="Add Friend"
         android:background="#4052b5"
         android:textColor="@color/colorAccent"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:layout_gravity="center_horizontal"
         android:paddingLeft="5sp"
         android:paddingRight="5sp"

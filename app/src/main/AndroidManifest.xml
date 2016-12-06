@@ -24,5 +24,13 @@
             android:name=".MainActivity"
             android:label="My PackThat">
         </activity>
+        <activity
+            android:name=".PrivateEventActivity"
+            android:label="My Event">
+        </activity>
+        <activity
+            android:name=".GroupEventActivity"
+            android:label="Our Event">
+        </activity>
     </application>
 </manifest>

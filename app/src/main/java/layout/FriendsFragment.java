@@ -1,8 +1,6 @@
 package layout;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,10 +45,7 @@ import java.util.ArrayList;
  */
 public class FriendsFragment extends Fragment {
     //instance variables
-    private String title;
-    private int page;
     private ArrayList<Friend> friendsList;
-    private OnFragmentInteractionListener mListener;
     public static FriendsListAdapter friendsListAdapter;
 
     public FriendsFragment() {
@@ -59,11 +53,9 @@ public class FriendsFragment extends Fragment {
     }
 
     //newInstance constructor for creating the fragment with arguments
-    public static FriendsFragment newInstance(int page, String title, ArrayList<Friend> friendsList) {
+    public static FriendsFragment newInstance(ArrayList<Friend> friendsList) {
         FriendsFragment friendsFragment = new FriendsFragment();
         Bundle args = new Bundle();
-        args.putInt("pageNumber", page);
-        args.putString("pageTitle", title);
         args.putSerializable("friendsList", friendsList);
         friendsFragment.setArguments(args);
         return friendsFragment;
@@ -72,8 +64,6 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("pageNumber", 0);
-        title = getArguments().getString("pageTitle");
         friendsList = (ArrayList<Friend>) getArguments().getSerializable("friendsList");
     }
 

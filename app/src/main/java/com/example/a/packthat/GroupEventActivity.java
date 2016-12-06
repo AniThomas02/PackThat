@@ -52,7 +52,7 @@ public class GroupEventActivity extends AppCompatActivity{
                 case 2: // Fragment # 2 - Group Lists
                     return GroupListFragment.newInstance(2, "Group Lists");
                 default: // Fragment # 3 - Private Lists
-                    return PrivateListFragment.newInstance(3, "Private Lists");
+                    return PrivateListFragment.newInstance(0);
             }
         }
 
