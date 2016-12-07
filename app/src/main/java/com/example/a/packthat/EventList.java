@@ -14,5 +14,6 @@ public class EventList implements Serializable {
     public EventList(int eventListId, String eventListName) {
         this.eventListId = eventListId;
         this.eventListName = eventListName;
+        eventListItems = new ArrayList<>();
     }
 }

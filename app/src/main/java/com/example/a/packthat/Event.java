@@ -18,5 +18,6 @@ public class Event implements Serializable {
         this.description = description;
         this.startDate = startDate;
         this.isPrivate = isPrivate;
+        eventLists = new ArrayList<>();
     }
 }

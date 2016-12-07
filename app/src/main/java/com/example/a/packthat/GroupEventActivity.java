@@ -49,10 +49,11 @@ public class GroupEventActivity extends AppCompatActivity{
                     return ChatLogFragment.newInstance(0, "ChatLog");
                 //case 1: // Fragment # 1 - Friends in Event
                 //    return FriendsFragment.newInstance(1, "Friends", );
-                case 2: // Fragment # 2 - Group Lists
+                //case 2: // Fragment # 2 - Group Lists
+                    default:
                     return GroupListFragment.newInstance(2, "Group Lists");
-                default: // Fragment # 3 - Private Lists
-                    return PrivateListFragment.newInstance(0);
+                //default: // Fragment # 3 - Private Lists
+                //    return PrivateListFragment.newInstance();
             }
         }
 

@@ -27,7 +27,7 @@ android:id="@+id/layout_private_list_and_button">
     android:text="Add List"
     android:background="#4052b5"
     android:textColor="@color/colorAccent"
-    android:textSize="20dp"
+    android:textSize="20sp"
     android:layout_weight=".025"
     android:layout_marginBottom="4dp" />
 </LinearLayout>

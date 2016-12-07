@@ -1,37 +1,40 @@
 package layout;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.Toast;
 
-import com.example.a.packthat.Event;
+import com.example.a.packthat.EventList;
+import com.example.a.packthat.EventListItem;
+import com.example.a.packthat.ExpandableListEventAdapter;
 import com.example.a.packthat.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PrivateListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PrivateListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class PrivateListFragment extends Fragment {
-    //instance variables
-    private int eventId;
+    ArrayList<EventList> privateEventListHeaders;
+    HashMap<EventList, List<EventListItem>> privateEventListChild;
+    public static ExpandableListEventAdapter privateExpandableListAdapter;
 
     public PrivateListFragment() {
         // Required empty public constructor
     }
 
     //newInstance constructor for creating the fragment with arguments
-    public static PrivateListFragment newInstance(int eventId) {
+    public static PrivateListFragment newInstance(ArrayList<EventList> privateEventListHeaders,
+                                                  HashMap<EventList, ArrayList<EventListItem>> privateEventListChild) {
         PrivateListFragment privateListFragment = new PrivateListFragment();
         Bundle args = new Bundle();
-        args.putInt("eventId", eventId);
+        args.putSerializable("eventListHeaders", privateEventListHeaders);
+        args.putSerializable("eventListChildren", privateEventListChild);
         privateListFragment.setArguments(args);
         return privateListFragment;
     }
@@ -39,7 +42,62 @@ public class PrivateListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.eventId = getArguments().getInt("eventId", -1);
+        privateEventListHeaders = (ArrayList<EventList>) getArguments().getSerializable("eventListHeaders");
+        privateEventListChild = (HashMap<EventList, List<EventListItem>>) getArguments().getSerializable("eventListChildren");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Button addListButton = (Button)getView().findViewById(R.id.button_add_private_List);
+        addListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext().getApplicationContext(), "Add Private List Click.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ExpandableListView privateExpandableListView = (ExpandableListView) getView().findViewById(R.id.expandableListView_private_list);
+        privateExpandableListAdapter = new ExpandableListEventAdapter(getActivity(), privateEventListHeaders, privateEventListChild);
+        privateExpandableListView.setAdapter(privateExpandableListAdapter);
+
+        /*
+        privateExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                return false;
+            }
+        });
+
+        privateExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                Toast.makeText(getContext().getApplicationContext(),
+                        privateEventListHeaders.get(groupPosition).eventListName + " Expanded",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        privateExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Toast.makeText(getContext().getApplicationContext(),
+                        privateEventListHeaders.get(groupPosition).eventListName + " Collapsed",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        privateExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Toast.makeText(getContext().getApplicationContext()
+                        , "Check: " + privateEventListChild.get(privateEventListHeaders.get(groupPosition)).get(childPosition).eliName
+                        , Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        */
     }
 
     @Override
@@ -50,13 +108,6 @@ public class PrivateListFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
     }
@@ -64,20 +115,5 @@ public class PrivateListFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

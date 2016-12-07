@@ -567,11 +567,11 @@ public class MainActivity extends AppCompatActivity {
     public void sendToEvent(Event event){
         if(event.isPrivate == 0){
             Intent privateIntent = new Intent(this, PrivateEventActivity.class);
-            //privateIntent.putExtra("event", event);
+            privateIntent.putExtra("event", event);
             startActivity(privateIntent);
             finish();
         }else{
-
+            //send to groupevent
         }
     }
     //endregion
