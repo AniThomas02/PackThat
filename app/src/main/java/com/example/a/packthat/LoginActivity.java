@@ -197,6 +197,7 @@ public class LoginActivity extends AppCompatActivity{
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplicationContext(), "Unable to connect to database.", Toast.LENGTH_SHORT).show();
                             Log.i("LoginActivity", error.toString());
                             System.out.println("Error");
                         }
@@ -204,7 +205,6 @@ public class LoginActivity extends AppCompatActivity{
             requestQueue.add(jsObjRequest);
         }catch (Exception e){
             Log.i("LoginActivity", e.toString());
-            Toast.makeText(getApplicationContext(), "Error creating new user account.", Toast.LENGTH_SHORT).show();
         }
     }
     //endregion

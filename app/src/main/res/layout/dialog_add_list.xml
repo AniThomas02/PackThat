@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
-        android:id="@+id/layout_add_friend"
+        android:id="@+id/layout_add_event_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -13,11 +13,11 @@
         android:layout_marginLeft="10dp">
 
         <TextView
-            android:id="@+id/textView_add_friend_email"
+            android:id="@+id/textView_add_event_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Friend's Email: "
+            android:text="List Name: "
             android:singleLine="false"
             android:paddingLeft="4dp"
             android:textSize="16sp"
@@ -27,25 +27,25 @@
             android:labelFor="@+id/editText_add_friend_email"/>
 
         <EditText
-            android:id="@+id/editText_add_friend_email"
+            android:id="@+id/editText_add_event_List"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="#393636"
             android:layout_gravity="center_vertical"
-            android:inputType="textEmailAddress" />
+            android:inputType="text"
+            android:maxLines="1" />
     </LinearLayout>
     <Button
-        android:id="@+id/button_add_friend"
+        android:id="@+id/button_add_event_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Friend"
+        android:text="Add List"
         android:background="#4052b5"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
         android:layout_gravity="center_horizontal"
         android:paddingLeft="10sp"
         android:paddingRight="10sp"
-        android:onClick="searchAndAddFriend"
         android:layout_marginBottom="5sp" />
 </LinearLayout>

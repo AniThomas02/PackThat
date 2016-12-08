@@ -122,7 +122,7 @@ public class PrivateEventActivity extends AppCompatActivity{
         public Fragment getItem(int position) {
             switch (position) {
                 default: // Fragment # 0 - PrivateList Fragment
-                    return PrivateListFragment.newInstance(currentEvent.eventLists, listHash);
+                    return PrivateListFragment.newInstance(currentEvent, listHash);
             }
         }
 
