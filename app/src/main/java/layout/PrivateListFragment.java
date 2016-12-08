@@ -23,7 +23,6 @@ import com.example.a.packthat.Event;
 import com.example.a.packthat.EventList;
 import com.example.a.packthat.EventListItem;
 import com.example.a.packthat.ExpandableListEventAdapter;
-import com.example.a.packthat.Friend;
 import com.example.a.packthat.R;
 
 import org.json.JSONObject;
@@ -99,43 +98,6 @@ public class PrivateListFragment extends Fragment {
         ExpandableListView privateExpandableListView = (ExpandableListView) getView().findViewById(R.id.expandableListView_private_list);
         privateExpandableListAdapter = new ExpandableListEventAdapter(getActivity(), privateEventListHeaders, privateEventListChild);
         privateExpandableListView.setAdapter(privateExpandableListAdapter);
-
-        /*
-        privateExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                return false;
-            }
-        });
-
-        privateExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getContext().getApplicationContext(),
-                        privateEventListHeaders.get(groupPosition).eventListName + " Expanded",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        privateExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getContext().getApplicationContext(),
-                        privateEventListHeaders.get(groupPosition).eventListName + " Collapsed",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        privateExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(getContext().getApplicationContext()
-                        , "Check: " + privateEventListChild.get(privateEventListHeaders.get(groupPosition)).get(childPosition).eliName
-                        , Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-        */
     }
 
     public void addNewEventList(String newListName){

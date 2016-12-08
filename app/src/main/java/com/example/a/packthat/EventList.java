@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by Ani Thomas on 12/5/2016.
+ * The lists within events
  */
 public class EventList implements Serializable {
     public int eventListId;

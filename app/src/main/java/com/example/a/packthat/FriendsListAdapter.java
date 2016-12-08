@@ -39,7 +39,7 @@ public class FriendsListAdapter extends ArrayAdapter<Friend> {
         ImageLoader imageLoader;
         requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
         imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache(){
-            private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(10);
+            private final LruCache<String, Bitmap> cache = new LruCache<>(10);
             public void putBitmap(String url, Bitmap bitmap){
                 cache.put(url, bitmap);
             }

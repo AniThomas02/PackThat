@@ -60,14 +60,67 @@ public class ExpandableListEventAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        EventListItem tempListItem = (EventListItem) getChild(groupPosition, childPosition);
-        final String childText = tempListItem.eliName;
+        final EventListItem currListItem = (EventListItem) getChild(groupPosition, childPosition);
+        final String childText = currListItem.eliName;
         LayoutInflater inflater = context.getLayoutInflater();
-
+        Button button;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.expandable_list_event_item, null);
+            button = (Button) convertView.findViewById(R.id.button_complete_item);
+            convertView.setTag(button);
+        }else{
+            button = (Button) convertView.getTag();
         }
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    RequestQueue requestQueue = Volley.newRequestQueue(context);
+                    JSONObject params = new JSONObject();
+                    params.put("eliId", currListItem.eliId);
+                    params.put("completedBy", User.ProfileImg);
+                    String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/completeEventListItem.php";
+                    JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                            (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        int affected = response.getInt("affected");
+                                        if(affected > 0){
+                                            currListItem.eliCompletedBy = User.ProfileImg;
+                                            notifyDataSetChanged();
+                                        }
+                                    } catch (Exception ex) {
+                                        System.out.println(ex.toString());
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.i("ELEA", Arrays.toString(error.getStackTrace()));
+                                    System.out.println("Error");
+                                }
+                            });
+                    requestQueue.add(jsObjRequest);
+                } catch (Exception e) {
+                    Log.i("HomeFragment", Arrays.toString(e.getStackTrace()));
+                    Toast.makeText(context, "Error creating new event.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        NetworkImageView completedByImage = (NetworkImageView) convertView.findViewById(R.id.imageView_completedBy);
+        RequestQueue requestQueue;
+        ImageLoader imageLoader;
+        requestQueue = Volley.newRequestQueue(context);
+        imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache(){
+            private final LruCache<String, Bitmap> cache = new LruCache<>(10);
+            public void putBitmap(String url, Bitmap bitmap){ cache.put(url, bitmap); }
+            public Bitmap getBitmap(String url) {return cache.get(url); }
+        });
+
+        completedByImage.setImageUrl("http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/uploads/" + currListItem.eliCompletedBy, imageLoader);
         TextView txtListChild = (TextView) convertView.findViewById(R.id.textView_event_list_body);
         txtListChild.setText(childText);
         return convertView;
@@ -116,8 +169,6 @@ public class ExpandableListEventAdapter extends BaseExpandableListAdapter {
                 TextView listLabel = (TextView) addEventListLayout.findViewById(R.id.textView_add_event_list);
                 listLabel.setText("Item Name");
 
-                RequestQueue requestQueue = Volley.newRequestQueue(context.getApplicationContext());
-
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
                 alert.setTitle("Add Item");
                 alert.setView(addEventListLayout);
@@ -140,9 +191,9 @@ public class ExpandableListEventAdapter extends BaseExpandableListAdapter {
                                             @Override
                                             public void onResponse(JSONObject response) {
                                                 try {
-                                                    int tempListId = response.getInt("listId");
+                                                    int tempListId = response.getInt("id");
                                                     String tempEventListItemName = response.getString("name");
-                                                    EventListItem newEvent = new EventListItem(tempEventListItemName, tempListId, null);
+                                                    EventListItem newEvent = new EventListItem(tempEventListItemName, tempListId, "0.jpg");
                                                     currEventList.eventListItems.add(newEvent);
                                                     notifyDataSetChanged();
                                                     dialog.dismiss();
