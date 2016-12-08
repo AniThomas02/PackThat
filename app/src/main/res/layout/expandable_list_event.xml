@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="20dp"
+    android:layout_height="18dp"
     android:background="#FF4CAF50">
     <TextView
         android:id="@+id/textView_event_list_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:textSize="24sp"
         android:textColor="#4052b5"
         android:textIsSelectable="false"
-        android:paddingLeft="10sp"
-        android:paddingTop="5sp"
-        android:paddingBottom="5sp"
-        android:textAlignment="viewEnd"
-        android:paddingRight="10sp" />
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:layout_weight="75"
+        android:gravity="center_vertical"/>
+    <Button
+        android:id="@+id/button_add_event_list_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:text="Add Item"
+        android:background="#4052b5"
+        android:textColor="#FF4CAF50"
+        android:textSize="16sp"
+        android:paddingLeft="5sp"
+        android:paddingRight="5sp" />
 </LinearLayout>

@@ -26,11 +26,12 @@
         </activity>
         <activity
             android:name=".PrivateEventActivity"
+            android:screenOrientation="portrait"
             android:label="My Event">
         </activity>
         <activity
             android:name=".GroupEventActivity"
-            android:label="Our Event">
+            android:label="Group Event">
         </activity>
     </application>
 </manifest>
