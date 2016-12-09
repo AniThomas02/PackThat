@@ -104,7 +104,7 @@ public class ExpandableListEventAdapter extends BaseExpandableListAdapter {
                             });
                     requestQueue.add(jsObjRequest);
                 } catch (Exception e) {
-                    Log.i("HomeFragment", Arrays.toString(e.getStackTrace()));
+                    Log.i("ExpandableListAdapter", Arrays.toString(e.getStackTrace()));
                     Toast.makeText(context, "Error creating new event.", Toast.LENGTH_SHORT).show();
                 }
             }

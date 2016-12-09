@@ -24,6 +24,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.a.packthat.Event;
 import com.example.a.packthat.EventListAdapter;
+import com.example.a.packthat.GroupEventActivity;
 import com.example.a.packthat.PrivateEventActivity;
 import com.example.a.packthat.R;
 import com.example.a.packthat.User;
@@ -114,7 +115,9 @@ public class HomeFragment extends Fragment {
                     privateEventIntent.putExtra("event", event);
                     startActivity(privateEventIntent);
                 }else{
-
+                    Intent groupIntent = new Intent(getActivity(), GroupEventActivity.class);
+                    groupIntent.putExtra("event", event);
+                    startActivity(groupIntent);
                 }
                 dialog.dismiss();
             }
@@ -123,43 +126,85 @@ public class HomeFragment extends Fragment {
         deleteEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    RequestQueue requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
-                    JSONObject params = new JSONObject();
-                    params.put("eventId", event.id);
-                    String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/deleteEvent.php";
-                    JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                            (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try{
-                                        int affected = response.getInt("affected");
-                                        if(affected >= 1){
-                                            Toast.makeText(getContext().getApplicationContext(), "Successfully deleted.", Toast.LENGTH_SHORT).show();
-                                            if(event.isPrivate == 0){
-                                                privateEventsList.remove(event);
-                                                privateEventsListAdapter.notifyDataSetChanged();
-                                            }else{
-                                                groupEventsList.remove(event);
-                                                groupEventsListAdaper.notifyDataSetChanged();
+                if(User.Id == event.createdById){
+                    try {
+                        RequestQueue requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
+                        JSONObject params = new JSONObject();
+                        params.put("eventId", event.id);
+                        String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/deleteEvent.php";
+                        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                                (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try{
+                                            int affected = response.getInt("affected");
+                                            if(affected >= 1){
+                                                Toast.makeText(getContext().getApplicationContext(), "Successfully deleted.", Toast.LENGTH_SHORT).show();
+                                                if(event.isPrivate == 0){
+                                                    privateEventsList.remove(event);
+                                                    privateEventsListAdapter.notifyDataSetChanged();
+                                                }else{
+                                                    groupEventsList.remove(event);
+                                                    groupEventsListAdaper.notifyDataSetChanged();
+                                                }
+                                                dialog.dismiss();
                                             }
-                                            dialog.dismiss();
+                                        }catch (Exception e){
+                                            Toast.makeText(getContext().getApplicationContext(), "Error deleting event.", Toast.LENGTH_SHORT).show();
                                         }
-                                    }catch (Exception e){
-                                        Toast.makeText(getContext().getApplicationContext(), "Error deleting event.", Toast.LENGTH_SHORT).show();
                                     }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.i("HomeFragment", error.getStackTrace().toString());
-                                    System.out.println("Error");
-                                }
-                            });
-                    requestQueue.add(jsObjRequest);
-                }catch (Exception e){
-                    Log.i("HomeFragment", e.getStackTrace().toString());
-                    Toast.makeText(getContext().getApplicationContext(), "Error deleting event.", Toast.LENGTH_SHORT).show();
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.i("HomeFragment", error.getStackTrace().toString());
+                                        System.out.println("Error");
+                                    }
+                                });
+                        requestQueue.add(jsObjRequest);
+                    }catch (Exception e){
+                        Log.i("HomeFragment", e.getStackTrace().toString());
+                        Toast.makeText(getContext().getApplicationContext(), "Error deleting event.", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    try {
+                        RequestQueue requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
+                        JSONObject params = new JSONObject();
+                        params.put("userId", User.Id);
+                        params.put("eventId", event.id);
+                        String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/deleteUserFromEvent.php";
+                        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                                (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try{
+                                            int affected = response.getInt("affected");
+                                            if(affected >= 1){
+                                                Toast.makeText(getContext().getApplicationContext(), "Successfully deleted.", Toast.LENGTH_SHORT).show();
+                                                if(event.isPrivate == 0){
+                                                    privateEventsList.remove(event);
+                                                    privateEventsListAdapter.notifyDataSetChanged();
+                                                }else{
+                                                    groupEventsList.remove(event);
+                                                    groupEventsListAdaper.notifyDataSetChanged();
+                                                }
+                                                dialog.dismiss();
+                                            }
+                                        }catch (Exception e){
+                                            Toast.makeText(getContext().getApplicationContext(), "Error deleting event.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.i("HomeFragment", error.getStackTrace().toString());
+                                        System.out.println("Error");
+                                    }
+                                });
+                        requestQueue.add(jsObjRequest);
+                    }catch (Exception e){
+                        Log.i("HomeFragment", e.getStackTrace().toString());
+                        Toast.makeText(getContext().getApplicationContext(), "Error deleting event.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

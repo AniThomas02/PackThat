@@ -31,20 +31,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class PrivateListFragment extends Fragment {
+public class EventListFragment extends Fragment {
     private Event currentEvent;
     private ArrayList<EventList> privateEventListHeaders;
     private HashMap<EventList, List<EventListItem>> privateEventListChild;
     public static ExpandableListEventAdapter privateExpandableListAdapter;
 
-    public PrivateListFragment() {
+    public EventListFragment() {
         // Required empty public constructor
     }
 
     //newInstance constructor for creating the fragment with arguments
-    public static PrivateListFragment newInstance(Event currEvent,
-                                                  HashMap<EventList, ArrayList<EventListItem>> privateEventListChild) {
-        PrivateListFragment privateListFragment = new PrivateListFragment();
+    public static EventListFragment newInstance(Event currEvent,
+                                                HashMap<EventList, ArrayList<EventListItem>> privateEventListChild) {
+        EventListFragment privateListFragment = new EventListFragment();
         Bundle args = new Bundle();
         args.putSerializable("event", currEvent);
         args.putSerializable("eventListChildren", privateEventListChild);

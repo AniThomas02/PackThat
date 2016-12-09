@@ -23,7 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import layout.PrivateListFragment;
+import layout.EventListFragment;
 
 /**
  * Created by Ani Thomas on 11/16/2016.
@@ -39,7 +39,7 @@ public class PrivateEventActivity extends AppCompatActivity{
         Intent privateEventIntent = getIntent();
         currentEvent = (Event) privateEventIntent.getSerializableExtra("event");
 
-        setContentView(R.layout.activity_private_event);
+        setContentView(R.layout.activity_event);
 
         currentEvent.eventLists = new ArrayList<>();
         listHash = new HashMap<>();
@@ -77,7 +77,6 @@ public class PrivateEventActivity extends AppCompatActivity{
                                             listHash.put(eventList, eventList.eventListItems);
                                         }
                                     }
-                                    createFragments();
                                 }
                             } catch(Exception ex) {
                                 System.out.println(ex.toString());
@@ -86,26 +85,27 @@ public class PrivateEventActivity extends AppCompatActivity{
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.i("MainActivity", error.toString());
+                            Log.i("PrivateEventActivity", error.toString());
                             System.out.println("Error: " + error);
-                            Toast.makeText(getApplicationContext(), "Error getting events.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Error getting eventLists.", Toast.LENGTH_SHORT).show();
                         }
                     });
             requestQueue.add(jsObjRequest);
         }catch (Exception e){
-            Log.i("MainActivity", e.toString());
+            Log.i("PrivateEventActivity", e.toString());
             Toast.makeText(getApplicationContext(), "Error Accessing DB for events.", Toast.LENGTH_SHORT).show();
         }
+        createFragments();
     }
 
     public void createFragments(){
-        setContentView(R.layout.activity_private_event);
-        ViewPager privateEventViewPager = (ViewPager) findViewById(R.id.vpPager_private_event);
+        setContentView(R.layout.activity_event);
+        ViewPager privateEventViewPager = (ViewPager) findViewById(R.id.vpPager_event);
         privateEventAdapterPager = new MyPrivateEventPagerAdapter(getSupportFragmentManager());
         privateEventViewPager.setAdapter(privateEventAdapterPager);
     }
 
-    //This allows for expansion in the future if I decide to.
+    //This allows for expansion in the future if I decide to add more pages.
     public static class MyPrivateEventPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 1;
 
@@ -120,7 +120,7 @@ public class PrivateEventActivity extends AppCompatActivity{
         public Fragment getItem(int position) {
             switch (position) {
                 default: // Fragment # 0 - PrivateList Fragment
-                    return PrivateListFragment.newInstance(currentEvent, listHash);
+                    return EventListFragment.newInstance(currentEvent, listHash);
             }
         }
 

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,7 +26,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -262,9 +265,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void cancelNewProfileImage(View view){
-        ImageView profImg = (ImageView)findViewById(R.id.imageView_profile);
-        profImg.setImageBitmap(null);
-        profImg.setImageBitmap(User.profileImageBitmap);
         imageSwitcher = (ViewSwitcher)findViewById(R.id.viewSwitcher_profile_image);
         imageSwitcher.showPrevious();
     }
@@ -553,13 +553,13 @@ public class MainActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.i("HomeFragment", Arrays.toString(error.getStackTrace()));
+                            Log.i("MainActivity", Arrays.toString(error.getStackTrace()));
                             System.out.println("Error");
                         }
                     });
             requestQueue.add(jsObjRequest);
         }catch (Exception e){
-            Log.i("HomeFragment", Arrays.toString(e.getStackTrace()));
+            Log.i("MainActivity", Arrays.toString(e.getStackTrace()));
             Toast.makeText(getApplicationContext(), "Error creating new event.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -571,7 +571,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(privateIntent);
             finish();
         }else{
-            //send to groupevent
+            Intent groupIntent = new Intent(this, GroupEventActivity.class);
+            groupIntent.putExtra("event", event);
+            startActivity(groupIntent);
+            finish();
         }
     }
     //endregion
