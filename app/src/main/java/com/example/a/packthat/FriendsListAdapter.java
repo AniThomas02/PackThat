@@ -17,7 +17,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 
 /**
- * Created by Ani Thomas on 12/3/2016.
+ * A custom list adapter to handle lists of friends
  */
 public class FriendsListAdapter extends ArrayAdapter<Friend> {
     public FriendsListAdapter(Context context, int resource, ArrayList<Friend> friendsList) {

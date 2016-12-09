@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,9 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -108,14 +105,9 @@ public class MainActivity extends AppCompatActivity {
                     return HomeFragment.newInstance(privateEventList, groupEventList);
             }
         }
-
-        // Returns the page title for the top indicator
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "Page " + position;
-        }
     }
 
+    //region GET METHODS
     public void getFriends(){
         try {
             final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -198,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Error Accessing DB for events.", Toast.LENGTH_SHORT).show();
         }
     }
+    //endregion
 
     //region PROFILE
     public void switchToImageUpload(View view){

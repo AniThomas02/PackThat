@@ -27,7 +27,7 @@ import layout.EventFriendFragment;
 import layout.EventListFragment;
 
 /**
- * Created by Ani Thomas on 11/16/2016.
+ * An Activity that allows the user to peruse a group event
  */
 public class GroupEventActivity extends AppCompatActivity{
     FragmentPagerAdapter groupEventAdapterPager;
@@ -161,12 +161,6 @@ public class GroupEventActivity extends AppCompatActivity{
                 default:// Fragment # 1 - Home// Fragment # 0 - PrivateList Fragment
                     return EventListFragment.newInstance(currentEvent, listHash);
             }
-        }
-
-        // Returns the page title for the top indicator
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "Page " + position;
         }
     }
 }

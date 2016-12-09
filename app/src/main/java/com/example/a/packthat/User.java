@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 import java.io.Serializable;
 
 /**
- * Created by Ani Thomas on 11/16/2016.
+ * The main user of the program, who logged in at the beginning
  */
 public class User implements Serializable{
     public static int Id;

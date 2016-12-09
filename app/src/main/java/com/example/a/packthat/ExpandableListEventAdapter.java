@@ -33,7 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by Ani Thomas on 12/6/2016.
+ * My custom expandable list adapter to handle event lists and their items.
+ * All functions are required to extend from baseExpandableListAdapter
  */
 public class ExpandableListEventAdapter extends BaseExpandableListAdapter {
     private Activity context;

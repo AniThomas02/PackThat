@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by Ani Thomas on 12/3/2016.
+ * A custom list adapter to handle lists of events
  */
 public class EventListAdapter extends ArrayAdapter<Event> {
     public EventListAdapter(Context context, int resource, ArrayList<Event> eventsList) {

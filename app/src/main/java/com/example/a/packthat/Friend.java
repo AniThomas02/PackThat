@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 import java.io.Serializable;
 
 /**
- * Created by Ani Thomas on 12/3/2016.
+ * Friends of the user, if they have them
  */
 public class Friend implements Serializable{
     public int friendId;

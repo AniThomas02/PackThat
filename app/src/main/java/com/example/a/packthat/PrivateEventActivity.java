@@ -26,7 +26,7 @@ import java.util.HashMap;
 import layout.EventListFragment;
 
 /**
- * Created by Ani Thomas on 11/16/2016.
+ * A private event for a single user to look at an event
  */
 public class PrivateEventActivity extends AppCompatActivity{
     FragmentPagerAdapter privateEventAdapterPager;

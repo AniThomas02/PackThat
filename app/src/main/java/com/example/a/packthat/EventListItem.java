@@ -3,7 +3,7 @@ package com.example.a.packthat;
 import java.io.Serializable;
 
 /**
- * Created by Ani Thomas on 12/5/2016.
+ * EventListItems hold the items inside lists inside events
  */
 public class EventListItem implements Serializable {
     public int eliId;
