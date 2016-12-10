@@ -1,119 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
     android:id="@+id/layout_personal_and_group_events">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:id="@+id/layout_events"
-        android:weightSum="2"
-        android:baselineAligned="false">
+        android:id="@+id/layout_personal_events"
+        android:weightSum="1"
+        android:layout_weight=".5">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/layout_personal_events"
-            android:weightSum="1"
-            android:layout_weight="1">
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_personal_header"
+            android:weightSum="1">
 
-            <LinearLayout
-                android:orientation="horizontal"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/layout_personal_header">
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="My Personal Events"
+                android:id="@+id/textView_personal"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingBottom="6sp"
+                android:paddingTop="12sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="18sp"
+                android:background="@color/colorAccent"
+                android:layout_weight="1" />
 
-                <TextView
-                    android:layout_width="208dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="My Personal Events"
-                    android:id="@+id/textView_personal"
-                    android:layout_gravity="center_horizontal"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:paddingBottom="6sp"
-                    android:paddingTop="12sp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:paddingLeft="18sp"
-                    android:background="@color/colorAccent" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Add New"
-                    android:id="@+id/button_add_personal"
-                    android:background="#4052b5"
-                    android:textColor="@color/colorAccent"
-                    android:onClick="displayPersonalEvent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <Button
+                android:layout_width="122dp"
                 android:layout_height="match_parent"
-                android:id="@+id/layout_personal_events_list" >
-
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/listView_personal" />
-            </LinearLayout>
+                android:text="Add New"
+                android:id="@+id/button_add_personal_event"
+                android:background="#4052b5"
+                android:textColor="@color/colorAccent"
+                android:nestedScrollingEnabled="false"
+                android:onClick="displayPersonalEvent" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/layout_group_events"
-            android:weightSum="1"
-            android:layout_weight="1">
+            android:id="@+id/layout_personal_events_list" >
 
-            <LinearLayout
-                android:orientation="horizontal"
+            <ListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/layout_group_header">
-
-                <TextView
-                    android:layout_width="208dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="My Group Events"
-                    android:id="@+id/textView_groups"
-                    android:layout_gravity="center_horizontal"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:paddingBottom="6sp"
-                    android:paddingTop="12sp"
-                    android:background="@color/colorAccent"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:paddingLeft="18sp" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Add New"
-                    android:id="@+id/button_add_group"
-                    android:background="#4052b5"
-                    android:textColor="@color/colorAccent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/layout_group_events_list">
-
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/listView_group" />
-            </LinearLayout>
-
+                android:id="@+id/listView_personal" />
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:id="@+id/layout_group_events"
+        android:weightSum="1"
+        android:layout_weight=".5">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_group_header">
+
+            <TextView
+                android:layout_width="265dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="My Group Events"
+                android:id="@+id/textView_groups"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingBottom="6sp"
+                android:paddingTop="12sp"
+                android:background="@color/colorAccent"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingLeft="18sp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:layout_width="122dp"
+                android:layout_height="match_parent"
+                android:text="Add New"
+                android:id="@+id/button_add_group_event"
+                android:background="#4052b5"
+                android:textColor="@color/colorAccent"
+                android:nestedScrollingEnabled="false"
+                android:onClick="displayGroupEvent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/layout_group_events_list">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/listView_group" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

@@ -1,6 +1,5 @@
 package layout;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -67,6 +66,7 @@ public class ProfileFragment extends Fragment {
             }
         });
         profileImage.setImageUrl("http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/uploads/" + User.ProfileImg, imageLoader);
+
     }
 
     @Override
@@ -80,15 +80,5 @@ public class ProfileFragment extends Fragment {
         name.setText(User.Name);
         TextView email = (TextView)getView().findViewById(R.id.textView_email);
         email.setText(User.Email);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }
