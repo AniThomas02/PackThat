@@ -3,7 +3,7 @@
     package="com.example.a.packthat">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,28 +11,28 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".LoginActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
-            android:label="My PackThat">
-        </activity>
+            android:label="My PackThat"></activity>
         <activity
             android:name=".PrivateEventActivity"
-            android:screenOrientation="portrait"
-            android:label="My Event">
-        </activity>
+            android:label="My Event"></activity>
         <activity
             android:name=".GroupEventActivity"
-            android:screenOrientation="portrait"
-            android:label="Group Event">
-        </activity>
+            android:label="Group Event"></activity>
+
+        <service
+            android:name=".EventService"
+            android:exported="false"></service>
     </application>
+
 </manifest>

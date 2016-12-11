@@ -40,6 +40,7 @@ public class ExpandableListEventAdapter extends BaseExpandableListAdapter {
     private Activity context;
     private ArrayList<EventList> listDataHeader;
     private HashMap<EventList, List<EventListItem>> listDataChild;
+    RequestQueue requestQueue;
 
     public ExpandableListEventAdapter(Activity context, ArrayList<EventList> listEventHeaders
             , HashMap<EventList, List<EventListItem>> listChildData){
@@ -91,6 +92,7 @@ public class ExpandableListEventAdapter extends BaseExpandableListAdapter {
                                         if(affected > 0){
                                             currListItem.eliCompletedBy = User.ProfileImg;
                                             notifyDataSetChanged();
+                                            Toast.makeText(context, "Completed!", Toast.LENGTH_SHORT).show();
                                         }
                                     } catch (Exception ex) {
                                         System.out.println(ex.toString());
@@ -112,9 +114,10 @@ public class ExpandableListEventAdapter extends BaseExpandableListAdapter {
         });
 
         NetworkImageView completedByImage = (NetworkImageView) convertView.findViewById(R.id.imageView_completedBy);
-        RequestQueue requestQueue;
         ImageLoader imageLoader;
-        requestQueue = Volley.newRequestQueue(context);
+        if(requestQueue == null){
+            requestQueue = Volley.newRequestQueue(context);
+        }
         imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache(){
             private final LruCache<String, Bitmap> cache = new LruCache<>(10);
             public void putBitmap(String url, Bitmap bitmap){ cache.put(url, bitmap); }
@@ -196,6 +199,7 @@ public class ExpandableListEventAdapter extends BaseExpandableListAdapter {
                                                     String tempEventListItemName = response.getString("name");
                                                     EventListItem newEvent = new EventListItem(tempEventListItemName, tempListId, "0.jpg");
                                                     currEventList.eventListItems.add(newEvent);
+                                                    listDataChild.put(currEventList, currEventList.eventListItems);
                                                     notifyDataSetChanged();
                                                     dialog.dismiss();
                                                 } catch (Exception ex) {

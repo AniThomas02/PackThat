@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 public class EventFriendFragment extends Fragment {
     //instance variables
+    private RequestQueue requestQueue;
     private Event currentEvent;
     private ArrayList<Friend> eventFriendsList;
     public static FriendsListAdapter friendsListAdapter;
@@ -189,7 +190,9 @@ public class EventFriendFragment extends Fragment {
 
     public void addFriend(String friendEmail){
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
+            if(requestQueue == null){
+                requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
+            }
             JSONObject params = new JSONObject();
             params.put("email", friendEmail);
             String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/selectFriend.php";

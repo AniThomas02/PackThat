@@ -31,9 +31,9 @@ import layout.EventListFragment;
  */
 public class GroupEventActivity extends AppCompatActivity{
     FragmentPagerAdapter groupEventAdapterPager;
-    private static Event currentEvent;
-    private static ArrayList<Friend> friendsInEvent;
-    private static HashMap<EventList, ArrayList<EventListItem>> listHash;
+    public static Event currentEvent;
+    public static ArrayList<Friend> friendsInEvent;
+    public static HashMap<EventList, ArrayList<EventListItem>> listHash;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,14 +41,46 @@ public class GroupEventActivity extends AppCompatActivity{
         Intent groupEventIntent = getIntent();
         currentEvent = (Event) groupEventIntent.getSerializableExtra("event");
 
-        setContentView(R.layout.activity_event);
-
         friendsInEvent = new ArrayList<>();
         getFriendsInEvent();
 
         currentEvent.eventLists = new ArrayList<>();
         listHash = new HashMap<>();
         getEventLists();
+
+        //give a little time to grab data
+        try {
+            Thread.sleep(500);
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Bork", Toast.LENGTH_SHORT).show();
+        }
+
+        setContentView(R.layout.activity_event);
+        ViewPager groupEventViewPager = (ViewPager) findViewById(R.id.vpPager_event);
+        groupEventAdapterPager = new MyGroupEventPagerAdapter(getSupportFragmentManager());
+        groupEventViewPager.setAdapter(groupEventAdapterPager);
+        groupEventViewPager.setCurrentItem(1);
+    }
+
+    public static class MyGroupEventPagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_ITEMS = 2;
+
+        public MyGroupEventPagerAdapter(FragmentManager fragmentManager) { super(fragmentManager); }
+
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0: // Fragment # 0 - Friends
+                    return EventFriendFragment.newInstance(friendsInEvent, currentEvent);
+                default:// Fragment # 1 - Home// Fragment # 0 - PrivateList Fragment
+                    return EventListFragment.newInstance(currentEvent, listHash);
+            }
+        }
     }
 
     public void getFriendsInEvent(){
@@ -135,32 +167,6 @@ public class GroupEventActivity extends AppCompatActivity{
         }catch (Exception e){
             Log.i("GroupEventActivity", e.toString());
             Toast.makeText(getApplicationContext(), "Error Accessing DB for events.", Toast.LENGTH_SHORT).show();
-        }
-        setContentView(R.layout.activity_event);
-        ViewPager groupEventViewPager = (ViewPager) findViewById(R.id.vpPager_event);
-        groupEventAdapterPager = new MyGroupEventPagerAdapter(getSupportFragmentManager());
-        groupEventViewPager.setAdapter(groupEventAdapterPager);
-        groupEventViewPager.setCurrentItem(1);
-    }
-
-    public static class MyGroupEventPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 2;
-
-        public MyGroupEventPagerAdapter(FragmentManager fragmentManager) { super(fragmentManager); }
-
-        @Override
-        public int getCount() {
-            return NUM_ITEMS;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0: // Fragment # 0 - Friends
-                    return EventFriendFragment.newInstance(friendsInEvent, currentEvent);
-                default:// Fragment # 1 - Home// Fragment # 0 - PrivateList Fragment
-                    return EventListFragment.newInstance(currentEvent, listHash);
-            }
         }
     }
 }

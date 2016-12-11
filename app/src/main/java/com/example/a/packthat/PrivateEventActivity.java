@@ -30,8 +30,8 @@ import layout.EventListFragment;
  */
 public class PrivateEventActivity extends AppCompatActivity{
     FragmentPagerAdapter privateEventAdapterPager;
-    private static Event currentEvent;
-    private static HashMap<EventList, ArrayList<EventListItem>> listHash;
+    public static Event currentEvent;
+    public static HashMap<EventList, ArrayList<EventListItem>> listHash;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,13 +44,20 @@ public class PrivateEventActivity extends AppCompatActivity{
         currentEvent.eventLists = new ArrayList<>();
         listHash = new HashMap<>();
         getEventLists();
+
+        //give a little time to grab data
+        try {
+            Thread.sleep(500);
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Bork", Toast.LENGTH_SHORT).show();
+        }
+
+        createFragments();
     }
 
     public void getEventLists(){
         try {
             final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            JSONObject params = new JSONObject();
-            params.put("eventId", currentEvent.id);
             String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/selectEventListsAndItems.php?eventId="+ currentEvent.id;
             JsonObjectRequest jsObjRequest = new JsonObjectRequest
                     (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -95,7 +102,6 @@ public class PrivateEventActivity extends AppCompatActivity{
             Log.i("PrivateEventActivity", e.toString());
             Toast.makeText(getApplicationContext(), "Error Accessing DB for events.", Toast.LENGTH_SHORT).show();
         }
-        createFragments();
     }
 
     public void createFragments(){
@@ -122,12 +128,6 @@ public class PrivateEventActivity extends AppCompatActivity{
                 default: // Fragment # 0 - PrivateList Fragment
                     return EventListFragment.newInstance(currentEvent, listHash);
             }
-        }
-
-        // Returns the page title for the top indicator
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "Page " + position;
         }
     }
 }

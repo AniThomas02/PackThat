@@ -20,6 +20,8 @@ import java.util.ArrayList;
  * A custom list adapter to handle lists of friends
  */
 public class FriendsListAdapter extends ArrayAdapter<Friend> {
+    private RequestQueue requestQueue;
+
     public FriendsListAdapter(Context context, int resource, ArrayList<Friend> friendsList) {
         super(context, resource, friendsList);
     }
@@ -35,9 +37,10 @@ public class FriendsListAdapter extends ArrayAdapter<Friend> {
         TextView friendEmail = (TextView) convertView.findViewById(R.id.textView_friend_list_email);
         friendEmail.setText(friend.email);
         NetworkImageView friendProfileImage = (NetworkImageView) convertView.findViewById(R.id.imageView_friend_list_profile);
-        RequestQueue requestQueue;
+        if(requestQueue == null){
+            requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
+        }
         ImageLoader imageLoader;
-        requestQueue = Volley.newRequestQueue(getContext().getApplicationContext());
         imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache(){
             private final LruCache<String, Bitmap> cache = new LruCache<>(10);
             public void putBitmap(String url, Bitmap bitmap){

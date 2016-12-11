@@ -1,8 +1,12 @@
 package layout;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.a.packthat.Event;
 import com.example.a.packthat.EventList;
 import com.example.a.packthat.EventListItem;
+import com.example.a.packthat.EventService;
 import com.example.a.packthat.ExpandableListEventAdapter;
 import com.example.a.packthat.R;
 
@@ -32,10 +37,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class EventListFragment extends Fragment {
-    private Event currentEvent;
-    private ArrayList<EventList> privateEventListHeaders;
-    private HashMap<EventList, List<EventListItem>> privateEventListChild;
+    public Event currentEvent;
+    public ArrayList<EventList> privateEventListHeaders;
+    public HashMap<EventList, List<EventListItem>> privateEventListChild;
     public static ExpandableListEventAdapter privateExpandableListAdapter;
+    private MyBroadcastReceiver mBroadcastReceiver;
+    public EventService eventService;
+    public Intent serviceIntent;
 
     public EventListFragment() {
         // Required empty public constructor
@@ -98,6 +106,15 @@ public class EventListFragment extends Fragment {
         ExpandableListView privateExpandableListView = (ExpandableListView) getView().findViewById(R.id.expandableListView_private_list);
         privateExpandableListAdapter = new ExpandableListEventAdapter(getActivity(), privateEventListHeaders, privateEventListChild);
         privateExpandableListView.setAdapter(privateExpandableListAdapter);
+
+        eventService = new EventService();
+        serviceIntent = new Intent(getActivity(), EventService.class);
+        serviceIntent.putExtra("eventId", currentEvent.id);
+        getActivity().startService(serviceIntent);
+        EventService.imAlive = true;
+
+        mBroadcastReceiver = new MyBroadcastReceiver();
+        LocalBroadcastManager.getInstance(getContext().getApplicationContext()).registerReceiver(mBroadcastReceiver, new IntentFilter("eventFilter"));
     }
 
     public void addNewEventList(String newListName){
@@ -144,12 +161,41 @@ public class EventListFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onPause(){
+        super.onPause();
+        EventService.imAlive = false;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    class MyBroadcastReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context,Intent data){
+            HashMap<EventList, List<EventListItem>> currentEventLists = (HashMap<EventList, List<EventListItem>>) data.getSerializableExtra("eventLists");
+            if(currentEventLists != null){
+                boolean contained;
+                if(privateEventListHeaders.size() <= currentEventLists.size()){
+                    ArrayList<EventList> tempList = new ArrayList<>(currentEventLists.keySet());
+                    for (EventList eList: tempList ) {
+                        contained = false;
+                        for(EventList currList: privateEventListHeaders){
+                            if(currList.eventListId == eList.eventListId){
+                                contained = true;
+                                currList.eventListItems = eList.eventListItems;
+                                privateEventListChild.remove(currList);
+                                privateEventListChild.put(currList, eList.eventListItems);
+                            }
+                        }
+                        if(!contained){
+                            privateEventListHeaders.add(eList);
+                            if(eList.eventListItems == null){
+                                privateEventListChild.put(eList, new ArrayList<EventListItem>());
+                            }else{
+                                privateEventListChild.put(eList, eList.eventListItems);
+                            }
+                        }
+                    }
+                }
+                privateExpandableListAdapter.notifyDataSetChanged();
+            }
+        }
     }
 }

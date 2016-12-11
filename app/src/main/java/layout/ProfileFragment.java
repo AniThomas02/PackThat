@@ -17,7 +17,6 @@ import com.example.a.packthat.R;
 import com.example.a.packthat.User;
 
 public class ProfileFragment extends Fragment {
-    //instance variables
     private NetworkImageView profileImage;
 
     public ProfileFragment() {

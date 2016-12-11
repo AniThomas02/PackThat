@@ -34,7 +34,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentPagerAdapter adapterViewPager;
     public static User MY_USER;
     public static ArrayList<Friend> friendsList;
-    public static ArrayList<Event> privateEventList, groupEventList;
+    public static ArrayList<Event> privateEventsList, groupEventsList;
     public ViewSwitcher imageSwitcher, nameSwitcher, emailSwitcher;
     private static final int RESULT_LOAD_IMAGE = 1;
     Bitmap newPhoto;
@@ -66,9 +65,16 @@ public class MainActivity extends AppCompatActivity {
         friendsList = new ArrayList<>();
         getFriends();
 
-        privateEventList = new ArrayList<>();
-        groupEventList = new ArrayList<>();
+        privateEventsList = new ArrayList<>();
+        groupEventsList = new ArrayList<>();
         getEvents();
+
+        //give a little time to grab data
+        try {
+            Thread.sleep(500);
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Bork", Toast.LENGTH_SHORT).show();
+        }
 
         setContentView(R.layout.activity_home);
         ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
@@ -102,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1: // Fragment # 1 - Profile
                     return ProfileFragment.newInstance();
                 default:// Fragment # 2 - Home
-                    return HomeFragment.newInstance(privateEventList, groupEventList);
+                    return HomeFragment.newInstance(privateEventsList, groupEventsList);
             }
         }
     }
@@ -137,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             Log.i("MainActivity", error.toString());
                             System.out.println("Error");
-                            Toast.makeText(getApplicationContext(), "Error getting friends.", Toast.LENGTH_SHORT).show();
                         }
                     });
             requestQueue.add(jsObjRequest);
@@ -166,9 +171,9 @@ public class MainActivity extends AppCompatActivity {
                                         getEvent = new Event(row.getInt("id"), row.getInt("createdById"), row.getString("name")
                                                 , row.getString("description"), row.getString("startDate"), row.getInt("isPrivate"));
                                         if(getEvent.isPrivate == 0){
-                                            privateEventList.add(getEvent);
+                                            privateEventsList.add(getEvent);
                                         }else{
-                                            groupEventList.add(getEvent);
+                                            groupEventsList.add(getEvent);
                                         }
                                     }
                                 }
@@ -464,98 +469,6 @@ public class MainActivity extends AppCompatActivity {
     //endregion
 
     //region HOME PAGE
-    public void displayPersonalEvent(View view){
-        displayCreateEventView(0);
-    }
-
-    public void displayGroupEvent(View view) {
-        displayCreateEventView(1);
-    }
-
-    //0 is personal, 1 is private
-    public void displayCreateEventView(final int eventType) {
-        LayoutInflater inflater = getLayoutInflater();
-        View createEventLayout = inflater.inflate(R.layout.dialog_add_event, null);
-        final EditText createName = (EditText) createEventLayout.findViewById(R.id.editText_create_name);
-        final EditText createDescription = (EditText) createEventLayout.findViewById(R.id.editText_create_description);
-        final EditText createStartDate = (EditText) createEventLayout.findViewById(R.id.editText_date_start);
-        Button createEvent = (Button) createEventLayout.findViewById(R.id.button_create_event);
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        if(eventType == 0){
-            alertDialog.setTitle("Create Personal Event");
-        }else{
-            alertDialog.setTitle("Create Group Event");
-        }
-        alertDialog.setView(createEventLayout);
-        alertDialog.setCancelable(true);
-
-        final AlertDialog dialog = alertDialog.create();
-        createEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String eventName = createName.getText().toString();
-                String eventDescription = createDescription.getText().toString();
-                String eventStartDate = createStartDate.getText().toString();
-                if(!eventName.equals("")){
-                    if(!eventDescription.equals("")) {
-                        if(!eventStartDate.equals("")){
-                            addNewEvent(eventName, eventDescription, eventStartDate, eventType);
-                        }else{
-                            Toast.makeText(getApplicationContext(), "You can make your startDate anything,"
-                                    +" please don't leave it blank.", Toast.LENGTH_SHORT).show();
-                        }
-                    }else{
-                        Toast.makeText(getApplicationContext(), "The event must have a description.", Toast.LENGTH_SHORT).show();
-                    }
-                }else {
-                    Toast.makeText(getApplicationContext(), "The event has no name!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        dialog.show();
-    }
-
-    public void addNewEvent(String eventName, String eventDescription, String eventStartDate, int eventType){
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            JSONObject params = new JSONObject();
-            params.put("createdById", User.Id);
-            params.put("name", eventName);
-            params.put("description", eventDescription);
-            params.put("startDate", eventStartDate);
-            params.put("isPrivate", eventType);
-            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/addNewEvent.php";
-            JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                int tempId = response.getInt("Id");
-                                int tempCreatedById = response.getInt("CreatedById");
-                                String tempName = response.getString("Name");
-                                String tempDescription = response.getString("Description");
-                                String tempStartDate = response.getString("StartDate");
-                                int tempIsPrivate = response.getInt("IsPrivate");
-                                Event newEvent = new Event(tempId, tempCreatedById, tempName, tempDescription, tempStartDate, tempIsPrivate);
-                                sendToEvent(newEvent);
-                            } catch(Exception ex) {
-                                System.out.println(ex.toString());
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.i("MainActivity", Arrays.toString(error.getStackTrace()));
-                            System.out.println("Error");
-                        }
-                    });
-            requestQueue.add(jsObjRequest);
-        }catch (Exception e){
-            Log.i("MainActivity", Arrays.toString(e.getStackTrace()));
-            Toast.makeText(getApplicationContext(), "Error creating new event.", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     public void sendToEvent(Event event){
         if(event.isPrivate == 0){
