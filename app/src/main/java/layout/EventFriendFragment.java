@@ -28,6 +28,7 @@ import com.example.a.packthat.Event;
 import com.example.a.packthat.Friend;
 import com.example.a.packthat.FriendsListAdapter;
 import com.example.a.packthat.R;
+import com.example.a.packthat.User;
 
 import org.json.JSONObject;
 
@@ -207,7 +208,19 @@ public class EventFriendFragment extends Fragment {
                                     String friendEmail = response.getString("Email");
                                     String friendImg = response.getString("ProfileImg");
                                     Friend newFriend = new Friend(friendId, friendName, friendEmail,friendImg);
-                                    addFriendToDatabase(newFriend);
+                                    if(friendId != 0){
+                                        if(newFriend.friendId != User.Id){
+                                            if(!hasFriend(newFriend.friendId)){
+                                                addFriendToDatabase(newFriend);
+                                            }else{
+                                                Toast.makeText(getContext().getApplicationContext(), "This person is already in the event.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }else{
+                                            Toast.makeText(getContext().getApplicationContext(), "You are already in the event!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }else{
+                                        Toast.makeText(getContext().getApplicationContext(), "No user has that email address.", Toast.LENGTH_SHORT).show();
+                                    }
                                 }else{
                                     Toast.makeText(getContext().getApplicationContext(), "No user has that email address.", Toast.LENGTH_SHORT).show();
                                 }
@@ -227,6 +240,15 @@ public class EventFriendFragment extends Fragment {
             Log.i("EventFriendFragment", e.getStackTrace().toString());
             Toast.makeText(getContext().getApplicationContext(), "Error with database.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public boolean hasFriend(int id){
+        for (Friend friend: eventFriendsList) {
+            if(friend.friendId == id){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addFriendToDatabase(final Friend newFriend){

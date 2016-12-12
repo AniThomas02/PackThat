@@ -32,6 +32,7 @@ import com.example.a.packthat.User;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FriendsFragment extends Fragment {
     //instance variables
@@ -200,7 +201,19 @@ public class FriendsFragment extends Fragment {
                                     String friendEmail = response.getString("Email");
                                     String friendImg = response.getString("ProfileImg");
                                     Friend newFriend = new Friend(friendId, friendName, friendEmail,friendImg);
-                                    addFriendToDatabase(newFriend);
+                                    if(friendId != 0){
+                                        if(friendId != User.Id){
+                                            if (!hasFriend(newFriend.friendId)) {
+                                                addFriendToDatabase(newFriend);
+                                            }else{
+                                                Toast.makeText(getContext().getApplicationContext(), "This person is already your friend!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }else{
+                                            Toast.makeText(getContext().getApplicationContext(), "Don't make yourself your own friend, find other people.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }else{
+                                        Toast.makeText(getContext().getApplicationContext(), "No user has that email address.", Toast.LENGTH_SHORT).show();
+                                    }
                                 }else{
                                     Toast.makeText(getContext().getApplicationContext(), "No user has that email address.", Toast.LENGTH_SHORT).show();
                                 }
@@ -211,7 +224,7 @@ public class FriendsFragment extends Fragment {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.i("LoginActivity", error.getStackTrace().toString());
+                            Log.i("LoginActivity", Arrays.toString(error.getStackTrace()));
                             System.out.println("Error");
                         }
                     });
@@ -220,6 +233,15 @@ public class FriendsFragment extends Fragment {
             Log.i("LoginActivity", e.getStackTrace().toString());
             Toast.makeText(getContext().getApplicationContext(), "Error creating new user account.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public boolean hasFriend(int id){
+        for (Friend friend: friendsList) {
+            if(friend.friendId == id){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addFriendToDatabase(final Friend newFriend){

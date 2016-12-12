@@ -132,8 +132,12 @@ public class HomeFragment extends Fragment {
                 if(!eventName.equals("")){
                     if(!eventDescription.equals("")) {
                         if(!eventStartDate.equals("")){
-                            addNewEvent(eventName, eventDescription, eventStartDate, eventType);
-                            dialog.dismiss();
+                            if(eventName.length() < 255 && eventDescription.length() < 255 && eventStartDate.length() < 255){
+                                addNewEvent(eventName, eventDescription, eventStartDate, eventType);
+                                dialog.dismiss();
+                            }else{
+                                Toast.makeText(getContext().getApplicationContext(), "One of the inputs is too long, try something shorter.", Toast.LENGTH_SHORT).show();
+                            }
                         }else{
                             Toast.makeText(getContext().getApplicationContext(), "You can make your startDate anything,"
                                     +" please don't leave it blank.", Toast.LENGTH_SHORT).show();
@@ -324,5 +328,4 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
-
 }

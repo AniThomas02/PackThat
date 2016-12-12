@@ -25,7 +25,6 @@ import java.util.List;
 public class EventService extends IntentService {
     public static volatile boolean imAlive;
     LocalBroadcastManager localBroadcastManager;
-    private int eventId;
     private RequestQueue requestQueue;
 
     public EventService() {
@@ -39,12 +38,12 @@ public class EventService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        eventId = intent.getIntExtra("eventId", 0);
+        int eventId = intent.getIntExtra("eventId", 0);
 
         //one minute is 60*1000
         try {
             while(imAlive) {
-                Thread.sleep(10000);
+                Thread.sleep(6000);
                 final HashMap<EventList, List<EventListItem>> listhash = new HashMap<>();
                 try {
                     if(requestQueue == null){

@@ -184,40 +184,46 @@ public class ExpandableListEventAdapter extends BaseExpandableListAdapter {
                     public void onClick(View v) {
                         String listItemName = addEventListItemEdit.getText().toString();
                         if(!listItemName.equals("")) {
-                            try {
-                                RequestQueue requestQueue = Volley.newRequestQueue(context);
-                                JSONObject params = new JSONObject();
-                                params.put("eventListId", currEventList.eventListId);
-                                params.put("listItemName", listItemName);
-                                String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/addEventListItem.php";
-                                JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                                        (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
-                                            @Override
-                                            public void onResponse(JSONObject response) {
-                                                try {
-                                                    int tempListId = response.getInt("id");
-                                                    String tempEventListItemName = response.getString("name");
-                                                    EventListItem newEvent = new EventListItem(tempEventListItemName, tempListId, "0.jpg");
-                                                    currEventList.eventListItems.add(newEvent);
-                                                    listDataChild.put(currEventList, currEventList.eventListItems);
-                                                    notifyDataSetChanged();
-                                                    dialog.dismiss();
-                                                } catch (Exception ex) {
-                                                    System.out.println(ex.toString());
+                            if(listItemName.length() <= 255){
+                                try {
+                                    RequestQueue requestQueue = Volley.newRequestQueue(context);
+                                    JSONObject params = new JSONObject();
+                                    params.put("eventListId", currEventList.eventListId);
+                                    params.put("listItemName", listItemName);
+                                    String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/addEventListItem.php";
+                                    JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                                            (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+                                                    try {
+                                                        int tempListId = response.getInt("id");
+                                                        String tempEventListItemName = response.getString("name");
+                                                        EventListItem newEvent = new EventListItem(tempEventListItemName, tempListId, "0.jpg");
+                                                        currEventList.eventListItems.add(newEvent);
+                                                        listDataChild.put(currEventList, currEventList.eventListItems);
+                                                        notifyDataSetChanged();
+                                                        dialog.dismiss();
+                                                    } catch (Exception ex) {
+                                                        System.out.println(ex.toString());
+                                                    }
                                                 }
-                                            }
-                                        }, new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError error) {
-                                                Log.i("HomeFragment", Arrays.toString(error.getStackTrace()));
-                                                System.out.println("Error");
-                                            }
-                                        });
-                                requestQueue.add(jsObjRequest);
-                            } catch (Exception e) {
-                                Log.i("HomeFragment", Arrays.toString(e.getStackTrace()));
-                                Toast.makeText(context, "Error creating new event.", Toast.LENGTH_SHORT).show();
+                                            }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Log.i("HomeFragment", Arrays.toString(error.getStackTrace()));
+                                                    System.out.println("Error");
+                                                }
+                                            });
+                                    requestQueue.add(jsObjRequest);
+                                } catch (Exception e) {
+                                    Log.i("HomeFragment", Arrays.toString(e.getStackTrace()));
+                                    Toast.makeText(context, "Error creating new event.", Toast.LENGTH_SHORT).show();
+                                }
+                            }else{
+                                Toast.makeText(context, "List item name is too long, try shortening it.", Toast.LENGTH_SHORT).show();
                             }
+                        }else{
+                            Toast.makeText(context, "No name to add a list item with.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

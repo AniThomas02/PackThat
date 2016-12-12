@@ -34,6 +34,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -295,15 +296,19 @@ public class MainActivity extends AppCompatActivity {
             String editEmailS = editEmail.getText().toString();
             if(!editNameS.equals("")){
                 if(!editEmailS.equals("")){
-                    if(editEmailS.matches("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$")){
-                        if(!editNameS.equals(User.Name) || !editEmailS.equals(User.Email) ){
-                            updateUserInformation(editNameS, editEmailS);
+                    if(editNameS.length() <= 255 || editEmailS.length() <= 255){
+                        if(editEmailS.matches("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$")){
+                            if(!editNameS.equals(User.Name) || !editEmailS.equals(User.Email) ){
+                                checkUserInformation(editNameS, editEmailS);
+                            }else{
+                                switchInfoToView();
+                            }
                         }else{
-                            switchInfoToView();
+                            Toast.makeText(getApplicationContext(), "Email must be in proper email format.", Toast.LENGTH_SHORT).show();
+                            editEmail.requestFocus();
                         }
                     }else{
-                        Toast.makeText(getApplicationContext(), "Email must be in proper email format.", Toast.LENGTH_SHORT).show();
-                        editEmail.requestFocus();
+                        Toast.makeText(getApplicationContext(), "One or both of the inputs provided is too long. Try something shorter.", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     Toast.makeText(getApplicationContext(), "Email cannot be blank to be save.", Toast.LENGTH_SHORT).show();
@@ -313,6 +318,45 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Name cannot be blank to be save.", Toast.LENGTH_SHORT).show();
                 editName.requestFocus();
             }
+        }
+    }
+
+    public void checkUserInformation(final String name, final String email){
+        try {
+            final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            JSONObject params = new JSONObject();
+            params.put("email", email);
+            String url = "http://webdev.cs.uwosh.edu/students/thomaa04/PackThatLiveServer/selectFriend.php";
+            final JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try{
+                                if(response != null){
+                                    int friendId = response.getInt("Id");
+                                    if(friendId == 0){
+                                        updateUserInformation(name, email);
+                                    }else{
+                                        Toast.makeText(getApplicationContext(), "Someone else has that email address!.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "Error checking email", Toast.LENGTH_SHORT).show();
+                                }
+                            }catch (Exception e){
+                                Toast.makeText(getApplicationContext(), "Error checking email", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("MainActivity", Arrays.toString(error.getStackTrace()));
+                            System.out.println("Error");
+                        }
+                    });
+            requestQueue.add(jsObjRequest);
+        }catch (Exception e){
+            Log.i("MainActivity", Arrays.toString(e.getStackTrace()));
+            Toast.makeText(getApplicationContext(), "Error grabbing email.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -392,17 +436,21 @@ public class MainActivity extends AppCompatActivity {
                 String newPassS = newPass.getText().toString();
                 String newPass2S = newPass2.getText().toString();
                 if(!oldPassS.equals("") && !newPassS.equals("") && !newPass2S.equals("")){
-                    if(oldPassS.equals(User.Password)){
-                        if(newPassS.equals(newPass2S)){
-                            if(isNewPasswordValid(newPassS)){
-                                updatePassword(newPassS);
-                                dialog.dismiss();
+                    if(oldPassS.length() <= 255 && newPassS.length() <= 255 && newPass2S.length() <= 255){
+                        if(oldPassS.equals(User.Password)){
+                            if(newPassS.equals(newPass2S)){
+                                if(isNewPasswordValid(newPassS)){
+                                    updatePassword(newPassS);
+                                    dialog.dismiss();
+                                }
+                            }else{
+                                Toast.makeText(getApplicationContext(), "New passwords do not match.", Toast.LENGTH_SHORT).show();
                             }
                         }else{
-                            Toast.makeText(getApplicationContext(), "New passwords do not match.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Old password is incorrect.", Toast.LENGTH_SHORT).show();
                         }
                     }else{
-                        Toast.makeText(getApplicationContext(), "Old password is incorrect.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Length is too long for one of more entries, try something shorter.", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     Toast.makeText(getApplicationContext(), "Make sure all entries are filled out.", Toast.LENGTH_SHORT).show();
@@ -464,23 +512,6 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             Log.i("MainActivity", e.toString());
             Toast.makeText(getApplicationContext(), "Error updating userInfo.", Toast.LENGTH_SHORT).show();
-        }
-    }
-    //endregion
-
-    //region HOME PAGE
-
-    public void sendToEvent(Event event){
-        if(event.isPrivate == 0){
-            Intent privateIntent = new Intent(this, PrivateEventActivity.class);
-            privateIntent.putExtra("event", event);
-            startActivity(privateIntent);
-            finish();
-        }else{
-            Intent groupIntent = new Intent(this, GroupEventActivity.class);
-            groupIntent.putExtra("event", event);
-            startActivity(groupIntent);
-            finish();
         }
     }
     //endregion

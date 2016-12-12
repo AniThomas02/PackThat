@@ -92,8 +92,12 @@ public class EventListFragment extends Fragment {
                     public void onClick(View v) {
                         String newEventList = addEventListEdit.getText().toString();
                         if(!newEventList.equals("")){
-                            addNewEventList(newEventList);
-                            dialog.dismiss();
+                            if(newEventList.length() <= 255){
+                                addNewEventList(newEventList);
+                                dialog.dismiss();
+                            }else{
+                                Toast.makeText(getContext().getApplicationContext(), "Name is too long, try shortening it.", Toast.LENGTH_SHORT).show();
+                            }
                         }else{
                             Toast.makeText(getContext().getApplicationContext(), "Please put in a name for your new list.", Toast.LENGTH_SHORT).show();
                         }

@@ -22,17 +22,19 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="My PackThat"></activity>
+            android:label="My PackThat" />
         <activity
             android:name=".PrivateEventActivity"
-            android:label="My Event"></activity>
+            android:label="My Event"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".GroupEventActivity"
-            android:label="Group Event"></activity>
+            android:label="Group Event"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".EventService"
-            android:exported="false"></service>
+            android:exported="false" />
     </application>
 
 </manifest>

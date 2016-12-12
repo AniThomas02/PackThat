@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity{
         if(email.matches("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$")) {
             return true;
         }else{
-            Toast.makeText(getApplicationContext(), "Email must be in a proper emailing format (e.g: email@email.com)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Email must be in a proper emailing format (e.g: user@uwosh.edu)", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
