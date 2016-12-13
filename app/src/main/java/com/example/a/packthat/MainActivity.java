@@ -298,8 +298,10 @@ public class MainActivity extends AppCompatActivity {
                 if(!editEmailS.equals("")){
                     if(editNameS.length() <= 255 || editEmailS.length() <= 255){
                         if(editEmailS.matches("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$")){
-                            if(!editNameS.equals(User.Name) || !editEmailS.equals(User.Email) ){
-                                checkUserInformation(editNameS, editEmailS);
+                            if(!editEmailS.equals(User.Email) ){
+                                checkEmailDuplicates(editNameS, editEmailS);
+                            }else if(!editNameS.equals(User.Name)){
+                                updateUserInformation(editNameS, editEmailS);
                             }else{
                                 switchInfoToView();
                             }
@@ -321,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void checkUserInformation(final String name, final String email){
+    public void checkEmailDuplicates(final String name, final String email){
         try {
             final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             JSONObject params = new JSONObject();
